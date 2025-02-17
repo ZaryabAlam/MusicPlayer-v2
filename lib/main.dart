@@ -3,12 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:mymusic/app/album/album_screen.dart';
 import 'package:mymusic/utils/theme_data.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'app/home/home_screen.dart';
-import 'app/song_screen.dart';
 import 'utils/constants.dart';
 import 'utils/theme_controller.dart';
 

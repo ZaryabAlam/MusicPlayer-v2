@@ -40,7 +40,7 @@ class HomeTitle extends StatelessWidget {
                     CommonText(text: "See all"),
                     const SizedBox(width: 5),
                      Icon(Icons.arrow_forward_ios_rounded,
-                        size: 15, color: grey.withOpacity(0.5)),
+                        size: 15, color: grey.withOpacity(0.8)),
                     const SizedBox(width: 5),
                   ],
                 ),
