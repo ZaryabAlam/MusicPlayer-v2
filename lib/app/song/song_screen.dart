@@ -68,10 +68,14 @@ class _PlaylistState extends State<SongScreen> {
                                 duration: formatDurationMilliseconds(
                                     audioFile.duration ?? 0),
                                 onPress: () {
-                                  Get.to(() => PlayerScreen(
-                                      audioUri: audioFile.uri ?? "",
-                                      title: audioFile.title,
-                                      artist: audioFile.album));
+                                    Get.to(() => PlayerScreen(
+              audioFiles: songController.audioFiles,
+              currentIndex: index,
+            ));
+                                  // Get.to(() => PlayerScreen(
+                                  //     audioUri: audioFile.uri ?? "",
+                                  //     title: audioFile.title,
+                                  //     artist: audioFile.album));
                                 },
                               ),
                                  index == songController.audioFiles.length - 1

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mymusic/app/home/component/customer_drawer.dart';
 import 'package:mymusic/components/common_inkwell.dart';
+import 'package:mymusic/models/song_model.dart';
 import 'package:mymusic/utils/constants.dart';
 import 'package:mymusic/utils/time_format.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -15,6 +16,8 @@ import '../../components/shimmer_card_small.dart';
 import '../../components/shimmer_card_square.dart';
 import '../../components/slide_down_animate.dart';
 import '../../components/slide_up_animate.dart';
+import '../album/album_song_screen.dart';
+import '../player_screen.dart';
 import 'controller/home_controller.dart';
 import '../../utils/permission_handler.dart';
 import '../../controllers/theme_controller.dart';
@@ -47,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // _loadAudioFolders();
   }
 
- @override
+  @override
   void dispose() {
     super.dispose();
     homeController.dispose();
@@ -59,152 +62,185 @@ class _HomeScreenState extends State<HomeScreen> {
     // double _w = MediaQuery.of(context).size.width;
     bool _isDarkMode = themeController.isDarkMode.value;
 
-    return Obx(() =>Scaffold(
-      appBar: AppBar(
-        title: CommonText(text: "Home", fontSize: 22),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.search_rounded),
-              visualDensity: VisualDensity.compact),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.info_rounded),
-              visualDensity: VisualDensity.compact)
-        ],
-      ),
-      drawer: CustomDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // SizedBox(height: 20),
-              // ShimmerCardSquare(),
-              // EmptyCardSmall(),
-              // EmptyCardBig(),
-              // ShimmerCardSmall(),
-              // ShimmerCardBig(),
-              SizedBox(height: 20),
-              homeController.isFileLoading.value
-                  ? ShimmerCardSmall()
-                  :   homeController.audioFiles.isEmpty
-                      ? EmptyCardBig()
-                      : SlideDownAnimate(
-                        delay: 300,
-                        children: [
-                          ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount:
-                                  homeController.audioFiles.length > 1 ? 1 : homeController.audioFiles.length,
-                              itemBuilder: (context, index) {
-                                final audioFile = homeController.audioFiles[index];
-                                return featureSongCard(
-                                    audioFile: audioFile, isDarkMode: _isDarkMode);
-                              }),
-                        ],
-                      ),
-              const SizedBox(height: 20),
-              HomeTitle(
-                text: "Albums",
-                onPress: () {
-                  Get.to(()=>AlbumScreen());
-                },
-              ),
-              // const SizedBox(height: 20),
-             homeController.isFolderLoading.value
-                  ? Container(
-                      height: 160,
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: ListView.builder(
-                          itemCount: 8,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return ShimmerCardSquare();
-                          }),
-                    )
-                  : homeController.audioFolders.isEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: EmptyCardBig(),
-                        )
-                      : SlideDownAnimate(
-                        delay: 400,
-                        children: [
-                          Container(
-                              height: 160,
-                              // color: red,
-                              child: ListView.builder(
-                                  itemCount: homeController.audioFolders.length > 4
-                                  ? 4
-                                  : homeController.audioFolders.length,
-                                  shrinkWrap: true,
-                                  // physics: NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    var items = albumData[index];
-                                    String folderName =
-                                       homeController.audioFolders.keys.elementAt(index);
-                                    List<SongModel> folderFiles =
-                                        homeController.audioFolders[folderName]!;
-                                    return Row(
-                                      children: [
-                                        const SizedBox(width: 15),
-                                        HomeAlbumCard(
-                                            folderName: folderName,
-                                            image: items["image"],
-                                            itemCount: folderFiles.length.toString(),
-                                            onPress: () {}),
-                                        index == albumData.length - 1
-                                            ? const SizedBox(width: 15)
-                                            : const SizedBox(width: 0)
-                                      ],
-                                    );
-                                  }),
+    return Obx(() => Scaffold(
+          appBar: AppBar(
+            title: CommonText(text: "Home", fontSize: 22),
+            actions: [
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.search_rounded),
+                  visualDensity: VisualDensity.compact),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.info_rounded),
+                  visualDensity: VisualDensity.compact)
+            ],
+          ),
+          drawer: CustomDrawer(),
+          body: SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // SizedBox(height: 20),
+                  // ShimmerCardSquare(),
+                  // EmptyCardSmall(),
+                  // EmptyCardBig(),
+                  // ShimmerCardSmall(),
+                  // ShimmerCardBig(),
+                  SizedBox(height: 20),
+                  homeController.isFileLoading.value
+                      ? ShimmerCardSmall()
+                      : homeController.audioFiles.isEmpty
+                          ? EmptyCardBig()
+                          : SlideDownAnimate(
+                              delay: 300,
+                              children: [
+                                ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount:
+                                        homeController.audioFiles.length > 1
+                                            ? 1
+                                            : homeController.audioFiles.length,
+                                    itemBuilder: (context, index) {
+                                      final audioFile =
+                                          homeController.audioFiles[index];
+                                      return featureSongCard(
+                                        audioFile: audioFile,
+                                        isDarkMode: _isDarkMode,
+                                        onPress: () {
+                                          Get.to(() => PlayerScreen(
+                                              audioFiles:
+                                                  homeController.audioFiles,
+                                              currentIndex: index));
+                                        },
+                                      );
+                                    }),
+                              ],
                             ),
-                        ],
-                      ),
-              const SizedBox(height: 10),
-              HomeTitle(text: "Songs", onPress: () {
-                  Get.to(()=>SongScreen());
-                }),
-              const SizedBox(height: 20),
-            homeController.isFileLoading.value
-                  ? ShimmerCardSmall()
-                  :  homeController.audioFiles.isEmpty
-                      ? EmptyCardSmall()
-                      : SlideUpAnimate(
-                        delay: 400,
-                        children: [
-                          ListView.builder(
+                  const SizedBox(height: 20),
+                  HomeTitle(
+                    text: "Albums",
+                    onPress: () {
+                      Get.to(() => AlbumScreen());
+                    },
+                  ),
+                  // const SizedBox(height: 20),
+                  homeController.isFolderLoading.value
+                      ? Container(
+                          height: 160,
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: ListView.builder(
+                              itemCount: 8,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              // itemCount: _audioFiles.length,
-                             itemCount: homeController.audioFiles.length > 6
-                                  ? 6
-                                  :  homeController.audioFiles.length,
+                              scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                final audioFile =  homeController.audioFiles[index];
-                                return Column(
-                                  children: [
-                                    SongListItem(
-                                      name: audioFile.title,
-                                      duration: formatDurationMilliseconds(
-                                          audioFile.duration ?? 0),
-                                      onPress: () {},
-                                    ),
-                                    const SizedBox(height: 13),
-                                  ],
-                                );
+                                return ShimmerCardSquare();
                               }),
-                        ],
-                      ),
-              const SizedBox(height: 20),
-            ]),
-      ),
-    ));
+                        )
+                      : homeController.audioFolders.isEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: EmptyCardBig(),
+                            )
+                          : SlideDownAnimate(
+                              delay: 400,
+                              children: [
+                                Container(
+                                  height: 160,
+                                  // color: red,
+                                  child: ListView.builder(
+                                      itemCount:
+                                          homeController.audioFolders.length > 4
+                                              ? 4
+                                              : homeController
+                                                  .audioFolders.length,
+                                      shrinkWrap: true,
+                                      // physics: NeverScrollableScrollPhysics(),
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        var items = albumData[index];
+                                        String folderName = homeController
+                                            .audioFolders.keys
+                                            .elementAt(index);
+                                        List<SongModel> folderFiles =
+                                            homeController
+                                                .audioFolders[folderName]!;
+                                        return Row(
+                                          children: [
+                                            const SizedBox(width: 15),
+                                            HomeAlbumCard(
+                                                folderName: folderName,
+                                                image: items["image"],
+                                                itemCount: folderFiles.length
+                                                    .toString(),
+                                                onPress: () {
+                                                       Get.to(
+                                              () => AlbumSongScreen(
+                                                  folderName: folderName,
+                                                  folderFiles: folderFiles),
+                                            );
+                                                }),
+                                            index == albumData.length - 1
+                                                ? const SizedBox(width: 15)
+                                                : const SizedBox(width: 0)
+                                          ],
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                  const SizedBox(height: 10),
+                  HomeTitle(
+                      text: "Songs",
+                      onPress: () {
+                        Get.to(() => SongScreen());
+                      }),
+                  const SizedBox(height: 20),
+                  homeController.isFileLoading.value
+                      ? ShimmerCardSmall()
+                      : homeController.audioFiles.isEmpty
+                          ? EmptyCardSmall()
+                          : SlideUpAnimate(
+                              delay: 400,
+                              children: [
+                                ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    // itemCount: _audioFiles.length,
+                                    itemCount:
+                                        homeController.audioFiles.length > 6
+                                            ? 6
+                                            : homeController.audioFiles.length,
+                                    itemBuilder: (context, index) {
+                                      final audioFile =
+                                          homeController.audioFiles[index];
+                                      return Column(
+                                        children: [
+                                          SongListItem(
+                                            name: audioFile.title,
+                                            duration:
+                                                formatDurationMilliseconds(
+                                                    audioFile.duration ?? 0),
+                                            onPress: () {
+                                              Get.to(() => PlayerScreen(
+                                                  audioFiles:
+                                                      homeController.audioFiles,
+                                                  currentIndex: index));
+                                            },
+                                          ),
+                                          const SizedBox(height: 13),
+                                        ],
+                                      );
+                                    }),
+                              ],
+                            ),
+                  const SizedBox(height: 20),
+                ]),
+          ),
+        ));
   }
 
 //
@@ -284,5 +320,3 @@ class _HomeScreenState extends State<HomeScreen> {
   //   }
   // }
 }
-
-

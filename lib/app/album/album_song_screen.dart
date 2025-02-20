@@ -21,40 +21,41 @@ class AlbumSongScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Album Song"),
+        title: Text(folderName),
       ),
       body: Column(
         children: [
           folderFiles.isEmpty
-                ? EmptyCardSmall()
-                : Expanded(
-                      child: ListView.builder(
-                                itemCount: folderFiles.length,
-                        itemBuilder: (context, index) {
-                            final audioFile = folderFiles[index];
-                          return Column(
-                            children: [  index ==  0
-                                            ? const SizedBox(height: 20)
-                                            : const SizedBox(height: 0),
-                              SongListItem(
-                                name: audioFile.title,
-                                duration: formatDurationMilliseconds(
-                                    audioFile.duration ?? 0),
-                                onPress: () {
-                                  Get.to(() => PlayerScreen(
-                                      audioUri: audioFile.uri ?? "",
-                                      title: audioFile.title,
-                                      artist: audioFile.album));
-                                },
-                              ),
-                                 index == folderFiles.length - 1
-                                            ? const SizedBox(height: 20)
-                                            : const SizedBox(height: 15)
-                            ],
-                          );
-                        },
-                      ),
-                    ),
+              ? EmptyCardSmall()
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: folderFiles.length,
+                    itemBuilder: (context, index) {
+                      final audioFile = folderFiles[index];
+                      return Column(
+                        children: [
+                          index == 0
+                              ? const SizedBox(height: 20)
+                              : const SizedBox(height: 0),
+                          SongListItem(
+                            name: audioFile.title,
+                            duration: formatDurationMilliseconds(
+                                audioFile.duration ?? 0),
+                            onPress: () {
+                              Get.to(() => PlayerScreen(
+                                    audioFiles: folderFiles,
+                                    currentIndex: index,
+                                  ));
+                            },
+                          ),
+                          index == folderFiles.length - 1
+                              ? const SizedBox(height: 20)
+                              : const SizedBox(height: 15)
+                        ],
+                      );
+                    },
+                  ),
+                ),
         ],
       ),
     );

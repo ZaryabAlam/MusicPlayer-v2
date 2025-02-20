@@ -19,24 +19,26 @@ void main() async {
       androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
       androidNotificationChannelName: 'Audio playback',
       androidNotificationOngoing: true);
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   MyApp({super.key});
+  MyApp({super.key});
   // final DataController dataController = Get.put(DataController());
   var materialColor = getMaterialColor(primaryAppColor);
-    final themeController = Get.find<ThemeController>();
+  final themeController = Get.find<ThemeController>();
 
   @override
   Widget build(BuildContext context) {
-      return Obx(() => GetMaterialApp(
+    return Obx(
+      () => GetMaterialApp(
         title: 'My Music',
-         theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
-          defaultTransition:  Transition.cupertino,
-          transitionDuration: const Duration(milliseconds: 800),
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode:
+            themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
+        defaultTransition: Transition.cupertino,
+        transitionDuration: const Duration(milliseconds: 800),
         home: const HomeScreen(),
       ),
     );

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mymusic/app/favorite/favorite_screen.dart';
 import 'package:mymusic/app/setting/setting_screen.dart';
+
+import '../../playlist/playlist_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -29,6 +32,28 @@ class CustomDrawer extends StatelessWidget {
               leading: Icon(Icons.home_rounded),
               onTap: () {
                 Get.back();
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 25, left: 25),
+            child: ListTile(
+              title: Text("Playlist"),
+              leading: Icon(Icons.stars_rounded),
+              onTap: () {
+             Get.back();
+             Get.to(()=>PlaylistScreen());
+              },
+            ),
+          ),
+           Padding(
+            padding: EdgeInsets.only(top: 25, left: 25),
+            child: ListTile(
+              title: Text("Favorite"),
+              leading: Icon(Icons.favorite_rounded),
+              onTap: () {
+             Get.back();
+             Get.to(()=>FavoriteScreen());
               },
             ),
           ),

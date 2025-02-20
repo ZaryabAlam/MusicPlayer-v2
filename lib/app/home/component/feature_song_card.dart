@@ -13,9 +13,12 @@ class featureSongCard extends StatelessWidget {
     super.key,
     required this.audioFile,
     required bool isDarkMode,
+    required this.onPress,
+    
   }) : _isDarkMode = isDarkMode;
   final SongModel audioFile;
   final bool _isDarkMode;
+    final Function() onPress;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +95,7 @@ class featureSongCard extends StatelessWidget {
                                 : black.withOpacity(0.5),
                             color: black.withOpacity(0.2),
                             child: CommonInkwell(
-                              onPress: () {},
+                              onPress: onPress,
                               space: 5,
                               radius: 25,
                               child: Row(

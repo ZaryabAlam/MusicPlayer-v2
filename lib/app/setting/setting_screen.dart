@@ -21,7 +21,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: CommonText(text: "Setting", fontSize: 22),
+          title: CommonText(text: "Setting", fontSize: 22)
      
         ),
         body: Padding(

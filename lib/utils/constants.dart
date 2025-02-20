@@ -1,8 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-Color primaryAppColor = Color(0xFF089DD7);
+Color primaryAppColor = Color.fromARGB(255, 195, 13, 4);
 Color secondaryAppColor = Color(0xFF1E2F85);
 
 Color primaryWhite = Colors.grey.shade300;
@@ -19,6 +20,9 @@ Color scaffoldBackground = Colors.grey.shade200;
 
 // Size preferredSize =  Size.fromHeight(50.0);
 
+void getBack(){
+Get.back();
+}
 
 //------ Converts Color to MaterialColor
 MaterialColor getMaterialColor(Color color) {
