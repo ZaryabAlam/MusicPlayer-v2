@@ -8,7 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'app/home/home_screen.dart';
 import 'utils/constants.dart';
-import 'utils/theme_controller.dart';
+import 'controllers/theme_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,9 @@ class MyApp extends StatelessWidget {
          theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
-        home: HomeScreen(),
+          defaultTransition:  Transition.cupertino,
+          transitionDuration: const Duration(milliseconds: 800),
+        home: const HomeScreen(),
       ),
     );
   }

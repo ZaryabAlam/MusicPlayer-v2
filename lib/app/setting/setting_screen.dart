@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mymusic/utils/constants.dart';
 
 import '../../components/common_text.dart';
 import '../../components/neu_container.dart';
-import '../../utils/theme_controller.dart';
+import '../../controllers/theme_controller.dart';
 
 class SettingScreen extends StatefulWidget {
   SettingScreen({super.key});
