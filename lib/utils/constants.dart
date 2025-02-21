@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Color primaryAppColor = Color.fromARGB(255, 195, 13, 4);
-Color secondaryAppColor = Color(0xFF1E2F85);
+Color primaryAppColor = const Color(0xFFC30D04);
+Color secondaryAppColor = const Color(0xFF716E6E);
 
 Color primaryWhite = Colors.grey.shade300;
 Color white = Colors.white;

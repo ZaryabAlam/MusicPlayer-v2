@@ -6,25 +6,26 @@ import "package:mymusic/components/neu_container.dart";
 import "package:mymusic/utils/constants.dart";
 import "package:rxdart/rxdart.dart";
 
-import "../models/position_data.dart";
-import "../utils/player_controls.dart";
-import "favorite/controller/favorite_manager.dart";
+import "../../models/position_data.dart";
+import "../../utils/player_controls.dart";
+import "controller/favorite_manager.dart";
 
-class PlayerScreen extends StatefulWidget {
+
+class FavoritePlayerScreen extends StatefulWidget {
   final List<dynamic> audioFiles; // List of all songs
   final int currentIndex; // Index of the currently selected song
 
-  const PlayerScreen({
+  const FavoritePlayerScreen({
     Key? key,
     required this.audioFiles,
     required this.currentIndex,
   }) : super(key: key);
 
   @override
-  State<PlayerScreen> createState() => _PlayerScreenState();
+  State<FavoritePlayerScreen> createState() => _PlayerScreenState();
 }
 
-class _PlayerScreenState extends State<PlayerScreen> {
+class _PlayerScreenState extends State<FavoritePlayerScreen> {
   late AudioPlayer _audioPlayer;
   bool _isFavorite = false;
   Stream<PositionData> get _positionDataStream =>
@@ -50,12 +51,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
       final playlist = ConcatenatingAudioSource(
         children: widget.audioFiles.map((audioFile) {
           return AudioSource.uri(
-            Uri.parse(audioFile.uri),
+            Uri.parse(audioFile['uri']),
             tag: MediaItem(
-                id: audioFile.id.toString(),
-                title: audioFile.title,
-                artist: audioFile.artist,
-                album: audioFile.album),
+                id: audioFile['id'].toString(),
+                title: audioFile['title'],
+                artist: audioFile['artist'],
+                album: audioFile['album']),
           );
         }).toList(),
       );
@@ -177,7 +178,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   //-----------
 
     Future<void> _checkIfFavorite() async {
-    final currentSongId = widget.audioFiles[widget.currentIndex].id.toString();
+    final currentSongId = widget.audioFiles[widget.currentIndex]['id'].toString();
     final isFav = await FavoriteSongsManager.isFavorite(currentSongId);
     setState(() {
       _isFavorite = isFav;
@@ -187,16 +188,16 @@ class _PlayerScreenState extends State<PlayerScreen> {
 Future<void> _toggleFavorite() async {
   final currentSong = widget.audioFiles[widget.currentIndex];
   final songData = {
-    'id': currentSong.id.toString(),
-    'title': currentSong.title,
-    'artist': currentSong.artist,
-    'album': currentSong.album,
-    'uri': currentSong.uri, // Include the URI for playback
-    'duration':currentSong.duration,
+    'id': currentSong['id'].toString(),
+    'title': currentSong['title'],
+    'artist': currentSong['artist'],
+    'album': currentSong['album'],
+    'uri': currentSong['uri'], // Include the URI for playback
+    'duration':currentSong['duration'],
   };
 
   if (_isFavorite) {
-    await FavoriteSongsManager.removeFavorite(currentSong.id.toString());
+    await FavoriteSongsManager.removeFavorite(currentSong['id'].toString());
   } else {
     await FavoriteSongsManager.addFavorite(songData);
   }

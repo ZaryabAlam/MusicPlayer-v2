@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mymusic/app/home/component/customer_drawer.dart';
 import 'package:mymusic/components/common_inkwell.dart';
-import 'package:mymusic/models/song_model.dart';
 import 'package:mymusic/utils/constants.dart';
 import 'package:mymusic/utils/time_format.dart';
 import 'package:on_audio_query/on_audio_query.dart';

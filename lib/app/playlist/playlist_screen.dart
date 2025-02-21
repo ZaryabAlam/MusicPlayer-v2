@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 
 import "../../components/common_text.dart";
+import "../../components/gradient_FAB.dart";
 
 class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({super.key});
@@ -19,6 +20,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         children: [
 
         ],
+      ),
+      floatingActionButton: GradientOutlineFAB(
+        icon: Icons.add,onPressed: (){}
       ),
     );
   }
