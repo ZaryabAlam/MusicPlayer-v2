@@ -1,10 +1,10 @@
 import"package:flutter/material.dart";
-import "package:on_audio_query/on_audio_query.dart";
 
 import "../../../components/common_inkwell.dart";
 import "../../../components/common_text.dart";
 import "../../../components/neu_container.dart";
 import "../../../components/outline_container.dart";
+import "../../../models/song_model.dart";
 import "../../../utils/constants.dart";
 import "../../../utils/time_format.dart";
 
@@ -16,7 +16,7 @@ class featureSongCard extends StatelessWidget {
     required this.onPress,
     
   }) : _isDarkMode = isDarkMode;
-  final SongModel audioFile;
+  final SongsModel audioFile;
   final bool _isDarkMode;
     final Function() onPress;
 

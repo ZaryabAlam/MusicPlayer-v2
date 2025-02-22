@@ -4,6 +4,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path/path.dart' as path;
 
 import '../../../components/gradient_snackbar.dart';
+import '../../../models/song_model.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/permission_handler.dart';
 
@@ -11,7 +12,7 @@ class HomeController extends GetxController {
   RxBool isFileLoading = true.obs;
   RxBool isFolderLoading = true.obs;
   final OnAudioQuery audioQuery = OnAudioQuery();
-  RxList<dynamic> audioFiles = [].obs;
+  RxList<SongsModel> audioFiles = <SongsModel>[].obs;
   RxMap<dynamic, dynamic> audioFolders = {}.obs;
 
   @override
@@ -26,14 +27,18 @@ class HomeController extends GetxController {
     if (hasPermission) {
       try {
         // Fetch all audio files using on_audio_query
-        final _audioFiles = await audioQuery.querySongs(
+        final List<SongModel> _audioFiles = await audioQuery.querySongs(
           sortType: SongSortType.DATE_ADDED,
           orderType: OrderType.DESC_OR_GREATER,
           uriType: UriType.EXTERNAL,
           ignoreCase: true,
         );
 
-        audioFiles.value = _audioFiles;
+        final List<SongsModel> convertedFiles =
+            _audioFiles.map((song) => songModelToSongsModel(song)).toList();
+
+        // Assign the converted list to audioFiles
+        audioFiles.assignAll(convertedFiles);
       } catch (e) {
         print('Failed to fetch audio files: $e');
       }

@@ -15,7 +15,7 @@ class SongScreen extends StatefulWidget {
 }
 
 class _PlaylistState extends State<SongScreen> {
-    final SongController songController = Get.put(SongController());
+  final SongController songController = Get.put(SongController());
   // final OnAudioQuery _audioQuery = OnAudioQuery();
   // List<SongModel> _audioFiles = [];
   // bool _isLoading = true;
@@ -35,62 +35,59 @@ class _PlaylistState extends State<SongScreen> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-      appBar: AppBar(title: Text('Songs')),
-      body: Column(
-        children: [
-            songController.isLoading.value
-              ?      ListView.builder(
-                  itemCount: 8,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: ShimmerCardSmall(),
-                    );
-                  })
-              :  songController.audioFiles.isEmpty
-                  ? Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                    child: EmptyCardSmall(),
-                  )
-                  : Expanded(
-                      child: ListView.builder(
-                        itemCount: songController.audioFiles.length,
-                        itemBuilder: (context, index) {
-                          final audioFile = songController.audioFiles[index];
-                          return Column(
-                            children: [  index ==  0
-                                            ? const SizedBox(height: 20)
-                                            : const SizedBox(height: 0),
-                              SongListItem(
-                                name: audioFile.title,
-                                duration: formatDurationMilliseconds(
-                                    audioFile.duration ?? 0),
-                                onPress: () {
-                                    Get.to(() => PlayerScreen(
-              audioFiles: songController.audioFiles,
-              currentIndex: index,
-            ));
-                                  // Get.to(() => PlayerScreen(
-                                  //     audioUri: audioFile.uri ?? "",
-                                  //     title: audioFile.title,
-                                  //     artist: audioFile.album));
-                                },
-                              ),
-                                 index == songController.audioFiles.length - 1
-                                            ? const SizedBox(height: 20)
-                                            : const SizedBox(height: 15)
-                              
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-      
-        ],
-      ),
-    ));
+          appBar: AppBar(title: Text('Songs')),
+          body: Column(
+            children: [
+              songController.isLoading.value
+                  ? ListView.builder(
+                      itemCount: 8,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: ShimmerCardSmall(),
+                        );
+                      })
+                  : songController.audioFiles.isEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: EmptyCardSmall(),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: songController.audioFiles.length,
+                            itemBuilder: (context, index) {
+                              final audioFile =
+                                  songController.audioFiles[index];
+                              return Column(
+                                children: [
+                                  index == 0
+                                      ? const SizedBox(height: 20)
+                                      : const SizedBox(height: 0),
+                                  SongListItem(
+                                    name: audioFile.title,
+                                    duration: formatDurationMilliseconds(
+                                        audioFile.duration ?? 0),
+                                    onPress: () {
+                                      Get.to(() => PlayerScreen(
+                                            audioFiles:
+                                                songController.audioFiles,
+                                            currentIndex: index,
+                                          ));
+                                    },
+                                  ),
+                                  index == songController.audioFiles.length - 1
+                                      ? const SizedBox(height: 20)
+                                      : const SizedBox(height: 15)
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+            ],
+          ),
+        ));
   }
 
 //

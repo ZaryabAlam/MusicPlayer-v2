@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/song_model.dart';
+
 class FavoriteSongsManager {
   static const String _favoritesKey = 'favorite_songs';
 
@@ -37,9 +39,9 @@ class FavoriteSongsManager {
   }
 
   // Get all favorite songs
-  static Future<List> getFavorites() async {
-    final prefs = await SharedPreferences.getInstance();
-    final favorites = prefs.getStringList(_favoritesKey) ?? [];
-    return favorites.map((json) => jsonDecode(json)).toList(); // Deserialize all songs
-  }
+static Future<List<SongsModel>> getFavorites() async {
+  final prefs = await SharedPreferences.getInstance();
+  final favorites = prefs.getStringList(_favoritesKey) ?? [];
+  return favorites.map((json) => SongsModel.fromJson(jsonDecode(json))).toList();
+}
 }

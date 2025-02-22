@@ -46,7 +46,7 @@ class GradientOutlineFAB extends StatelessWidget {
           padding: 0,
           radius: 14,
           child: CommonInkwell(
-              onPress: () {},
+              onPress: onPressed,
               space: 0,
               radius: 14,
               child:   Icon(

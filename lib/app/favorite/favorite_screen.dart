@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 
 import '../../components/common_text.dart';
 import '../../components/empty_card_small.dart';
+import '../../models/song_model.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
+import '../player_screen.dart';
 import 'controller/favorite_manager.dart';
-import 'favorite_player_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  List<dynamic> _favorites = [];
+  List<SongsModel> _favorites = [];
 
   @override
   void initState() {
@@ -23,7 +24,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   Future<void> _loadFavorites() async {
-    final List<dynamic> favorites = await FavoriteSongsManager.getFavorites();
+    final List<SongsModel> favorites = await FavoriteSongsManager.getFavorites();
     setState(() {
       _favorites = favorites;
     });
@@ -50,9 +51,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               itemBuilder: (context, index) {
                 final song = _favorites[index];
                 return Dismissible(
-                  key: Key(song["id"]),
+                  key: Key(song.id.toString()),
                   confirmDismiss: (direction) async {
-                    _removeFromFavorites(song["id"]);
+                    _removeFromFavorites(song.id.toString());
                   },
                   child: Column(
                     children: [
@@ -60,11 +61,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           ? const SizedBox(height: 20)
                           : const SizedBox(height: 0),
                       SongListItem(
-                          name: song['title'],
+                          name: song.title,
                           duration:
-                              formatDurationMilliseconds(song['duration'] ?? 0),
+                              formatDurationMilliseconds(song.duration ?? 0),
                           onPress: () {
-                            Get.to(() => FavoritePlayerScreen(
+                            Get.to(() => PlayerScreen(
                                   audioFiles: _favorites,
                                   currentIndex: index,
                                 ));

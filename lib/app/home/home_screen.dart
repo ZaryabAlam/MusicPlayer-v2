@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mymusic/app/home/component/customer_drawer.dart';
-import 'package:mymusic/components/common_inkwell.dart';
-import 'package:mymusic/utils/constants.dart';
 import 'package:mymusic/utils/time_format.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:path/path.dart' as path;
+// import 'package:path/path.dart' as path;
 
 import '../../components/common_text.dart';
 import '../../components/empty_card_big.dart';
@@ -18,7 +16,7 @@ import '../../components/slide_up_animate.dart';
 import '../album/album_song_screen.dart';
 import '../player_screen.dart';
 import 'controller/home_controller.dart';
-import '../../utils/permission_handler.dart';
+
 import '../../controllers/theme_controller.dart';
 import '../album/album_screen.dart';
 import '../song/song_screen.dart';
@@ -62,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     bool _isDarkMode = themeController.isDarkMode.value;
 
     return Obx(() => Scaffold(
-          appBar: AppBar(
+          appBar:  AppBar(
             title: CommonText(text: "Home", fontSize: 22),
             actions: [
               IconButton(
@@ -75,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   visualDensity: VisualDensity.compact)
             ],
           ),
-          drawer: CustomDrawer(),
+          drawer: const CustomDrawer(),
           body: SingleChildScrollView(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -87,11 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   // EmptyCardBig(),
                   // ShimmerCardSmall(),
                   // ShimmerCardBig(),
-                  SizedBox(height: 20),
+                 const SizedBox(height: 20),
                   homeController.isFileLoading.value
-                      ? ShimmerCardSmall()
+                      ? const ShimmerCardSmall()
                       : homeController.audioFiles.isEmpty
-                          ? EmptyCardBig()
+                          ? const EmptyCardBig()
                           : SlideDownAnimate(
                               delay: 300,
                               children: [
@@ -129,25 +127,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   homeController.isFolderLoading.value
                       ? Container(
                           height: 160,
-                          padding: EdgeInsets.symmetric(vertical: 20),
+                          padding:const  EdgeInsets.symmetric(vertical: 20),
                           child: ListView.builder(
                               itemCount: 8,
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                return ShimmerCardSquare();
+                                return const ShimmerCardSquare();
                               }),
                         )
                       : homeController.audioFolders.isEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 20),
+                          ?  const Padding(
+                              padding:  EdgeInsets.only(top: 20),
                               child: EmptyCardBig(),
                             )
                           : SlideDownAnimate(
                               delay: 400,
                               children: [
                                 Container(
-                                  height: 160,
+                                   height: 160,
                                   // color: red,
                                   child: ListView.builder(
                                       itemCount:
@@ -199,9 +197,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       }),
                   const SizedBox(height: 20),
                   homeController.isFileLoading.value
-                      ? ShimmerCardSmall()
+                      ? const ShimmerCardSmall()
                       : homeController.audioFiles.isEmpty
-                          ? EmptyCardSmall()
+                          ? const EmptyCardSmall()
                           : SlideUpAnimate(
                               delay: 400,
                               children: [
