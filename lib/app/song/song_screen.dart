@@ -52,8 +52,7 @@ class _PlaylistState extends State<SongScreen> {
                   : songController.audioFiles.isEmpty
                       ? Padding(
                           padding: const EdgeInsets.only(top: 20),
-                          child: EmptyCardSmall(),
-                        )
+                          child: EmptyCardSmall() )
                       : Expanded(
                           child: ListView.builder(
                             itemCount: songController.audioFiles.length,

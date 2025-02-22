@@ -50,7 +50,7 @@ class GradientOutlineFAB extends StatelessWidget {
               space: 0,
               radius: 14,
               child:   Icon(
-                Icons.add,
+              icon,
                 color: isDarkmode ?  primaryWhite : Colors.black87,
               )),
         ));

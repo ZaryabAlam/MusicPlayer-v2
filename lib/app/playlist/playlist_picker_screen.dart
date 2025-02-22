@@ -1,19 +1,24 @@
 import"package:flutter/material.dart";
 import "package:get/get.dart";
 
+import "../../models/song_model.dart";
+
 class SongPickerScreen extends StatelessWidget {
-  final List<dynamic> audioFiles;
-  final Function(List<dynamic>) onSongsSelected;
+  final List<SongsModel> audioFiles;
+  final Function(List<SongsModel>) onSongsSelected;
+  final List<SongsModel> initialSelection; // Existing songs in the playlist
 
   const SongPickerScreen({
     Key? key,
     required this.audioFiles,
     required this.onSongsSelected,
+    this.initialSelection = const [], // Default to an empty list if not provided
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> selectedSongs = [];
+    // Initialize selectedSongs with the initial selection
+    List<SongsModel> selectedSongs = List.from(initialSelection);
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +32,7 @@ class SongPickerScreen extends StatelessWidget {
                 return;
               }
               onSongsSelected(selectedSongs);
-              Navigator.pop(context);
+              // Navigator.pop(context);
             },
           ),
         ],
@@ -37,13 +42,8 @@ class SongPickerScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final audioFile = audioFiles[index];
           return ListTile(
-            // leading: QueryArtworkWidget(
-            //   id: audioFile.id,
-            //   type: ArtworkType.AUDIO,
-            //   nullArtworkWidget: Icon(Icons.music_note),
-            // ),
             title: Text(audioFile.title),
-            subtitle: Text(audioFile.artist ?? "Unknown Artist"),
+            subtitle: Text(audioFile.album ?? "Unknown Album"),
             trailing: Icon(
               selectedSongs.contains(audioFile)
                   ? Icons.check_box
@@ -55,7 +55,6 @@ class SongPickerScreen extends StatelessWidget {
               } else {
                 selectedSongs.add(audioFile);
               }
-              // Trigger UI update
               (context as Element).markNeedsBuild();
             },
           );

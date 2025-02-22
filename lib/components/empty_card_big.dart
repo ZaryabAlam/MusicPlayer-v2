@@ -16,8 +16,8 @@ class EmptyCardBig extends StatelessWidget {
       child: NeuContainer(
         padding: 0,
         child: Container(
-          height: 120,
-          width: double.infinity,
+          // // height: 120,
+          // width: double.infinity,
           padding: EdgeInsets.all(20),
           child: Column(
             children: [

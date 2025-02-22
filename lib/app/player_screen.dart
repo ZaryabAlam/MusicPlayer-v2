@@ -1,14 +1,15 @@
 import "package:audio_video_progress_bar/audio_video_progress_bar.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:just_audio/just_audio.dart";
 import "package:just_audio_background/just_audio_background.dart";
 import "package:mymusic/components/neu_container.dart";
 import "package:mymusic/utils/constants.dart";
-import "package:rxdart/rxdart.dart";
+import "package:rxdart/rxdart.dart" as rxdart;
 
 import "../models/position_data.dart";
 import "../utils/player_controls.dart";
-import "favorite/controller/favorite_manager.dart";
+import "favorite/controller/favorite_controller.dart";
 
 class PlayerScreen extends StatefulWidget {
   final List<dynamic> audioFiles; // List of all songs
@@ -25,10 +26,11 @@ class PlayerScreen extends StatefulWidget {
 }
 
 class _PlayerScreenState extends State<PlayerScreen> {
+  final FavoriteController favoriteController = Get.put(FavoriteController());
   late AudioPlayer _audioPlayer;
   bool _isFavorite = false;
   Stream<PositionData> get _positionDataStream =>
-      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+      rxdart.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
         _audioPlayer.positionStream,
         _audioPlayer.bufferedPositionStream,
         _audioPlayer.durationStream,
@@ -41,37 +43,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
     super.initState();
     _audioPlayer = AudioPlayer();
     _initAudioPlayer();
-     _checkIfFavorite();
-  }
-
-  Future<void> _initAudioPlayer() async {
-    try {
-      // Create a playlist using ConcatenatingAudioSource
-      final playlist = ConcatenatingAudioSource(
-        children: widget.audioFiles.map((audioFile) {
-          return AudioSource.uri(
-            Uri.parse(audioFile.uri),
-            tag: MediaItem(
-                id: audioFile.id.toString(),
-                title: audioFile.title,
-                artist: audioFile.artist,
-                album: audioFile.album),
-          );
-        }).toList(),
-      );
-
-      // Set the playlist and start playing from the current index
-      await _audioPlayer.setAudioSource(playlist,
-          initialIndex: widget.currentIndex);
-      await _audioPlayer.play();
-    } catch (e) {
-      print('Error loading audio: $e');
-    }
+    _checkIfFavorite();
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     _audioPlayer.dispose();
+    favoriteController.getFavorites();
     super.dispose();
   }
 
@@ -80,24 +58,28 @@ class _PlayerScreenState extends State<PlayerScreen> {
     return Scaffold(
       body: Stack(
         children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(onPressed: (){
-              getBack();
-                    }, icon: Icon(Icons.arrow_back_rounded)),
-                     IconButton(
+          Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      getBack();
+                    },
+                    icon: Icon(Icons.arrow_back_rounded)),
+                IconButton(
                   onPressed: _toggleFavorite,
                   icon: Icon(
-                    _isFavorite ? Icons.favorite_rounded :Icons.favorite_outline_rounded,
+                    _isFavorite
+                        ? Icons.favorite_rounded
+                        : Icons.favorite_outline_rounded,
                     color: _isFavorite ? primaryAppColor : grey,
                   ),
                 ),
-                  ],
-                ),
+              ],
             ),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,7 +92,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     decoration: BoxDecoration(
                         color: Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.grey.shade400, width: 2)),
+                        border:
+                            Border.all(color: Colors.grey.shade400, width: 2)),
                     child: NeuContainer(
                         padding: 0,
                         radius: 180,
@@ -133,7 +116,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         children: [
                           Text(
                             mediaItem.title,
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w500),
                           ),
                           SizedBox(height: 5),
                           Text(
@@ -157,7 +141,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           return ProgressBar(
                               barCapShape: BarCapShape.round,
                               progress: positionData?.position ?? Duration.zero,
-                              buffered: positionData?.bufferPosition ?? Duration.zero,
+                              buffered:
+                                  positionData?.bufferPosition ?? Duration.zero,
                               total: positionData?.duration ?? Duration.zero,
                               onSeek: _audioPlayer.seek,
                               thumbColor: Colors.transparent);
@@ -174,34 +159,67 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   //
-  //-----------
+  //--------------------------------- Custom Functions
+  //
+    Future<void> _initAudioPlayer() async {
+    try {
+      final playlist = ConcatenatingAudioSource(
+        children: widget.audioFiles.map((audioFile) {
+          return AudioSource.uri(
+            Uri.parse(audioFile.uri),
+            tag: MediaItem(
+                id: audioFile.id.toString(),
+                title: audioFile.title,
+                artist: audioFile.artist,
+                album: audioFile.album),
+          );
+        }).toList(),
+      );
 
-    Future<void> _checkIfFavorite() async {
+      // Set the playlist and start playing from the current index
+      await _audioPlayer.setAudioSource(playlist,
+          initialIndex: widget.currentIndex);
+      await _audioPlayer.play();
+    } catch (e) {
+      print('Error loading audio: $e');
+    }
+  }
+  
+  //
+  //
+
+  Future<void> _checkIfFavorite() async {
     final currentSongId = widget.audioFiles[widget.currentIndex].id.toString();
-    final isFav = await FavoriteSongsManager.isFavorite(currentSongId);
+    final isFav = await favoriteController.isFavorite(currentSongId);
     setState(() {
       _isFavorite = isFav;
     });
   }
 
-Future<void> _toggleFavorite() async {
-  final currentSong = widget.audioFiles[widget.currentIndex];
-  final songData = {
-    'id': currentSong.id.toString(),
-    'title': currentSong.title,
-    'artist': currentSong.artist,
-    'album': currentSong.album,
-    'uri': currentSong.uri, // Include the URI for playback
-    'duration':currentSong.duration,
-  };
+  //
+  //
 
-  if (_isFavorite) {
-    await FavoriteSongsManager.removeFavorite(currentSong.id.toString());
-  } else {
-    await FavoriteSongsManager.addFavorite(songData);
+  Future<void> _toggleFavorite() async {
+    final currentSong = widget.audioFiles[widget.currentIndex];
+    final songData = {
+      'id': currentSong.id.toString(),
+      'title': currentSong.title,
+      'artist': currentSong.artist,
+      'album': currentSong.album,
+      'uri': currentSong.uri, // Include the URI for playback
+      'duration': currentSong.duration,
+    };
+
+    if (_isFavorite) {
+      // await FavoriteSongsManager.removeFavorite(currentSong.id.toString());
+      await favoriteController.removeFavorite(currentSong.id.toString());
+    } else {
+      // await FavoriteSongsManager.addFavorite(songData);
+      await favoriteController.addFavorite(songData);
+    }
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
   }
-  setState(() {
-    _isFavorite = !_isFavorite;
-  });
-}
+
 }

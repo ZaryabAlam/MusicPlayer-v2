@@ -2,8 +2,11 @@ import "dart:convert";
 
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:mymusic/utils/constants.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
+import "../../components/Common_empty_card.dart";
+import "../../components/common_outline_button.dart";
 import "../../components/common_text.dart";
 import "../../components/gradient_FAB.dart";
 import "../song/controller/song_controller.dart";
@@ -24,14 +27,18 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: CommonText(text: "Playlist", fontSize: 22)),
-       body: FutureBuilder<List<dynamic>>(
+      body: FutureBuilder<List<dynamic>>(
         future: _getPlaylists(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-          if (snapshot.hasError || snapshot.data == null || snapshot.data!.isEmpty) {
-            return Center(child: Text("No playlists found"));
+          if (snapshot.hasError ||
+              snapshot.data == null ||
+              snapshot.data!.isEmpty) {
+            return Center(
+              child: CommonEmptyCard(text: "No Playlist Found!"),
+            );
           }
 
           final playlists = snapshot.data!;
@@ -39,18 +46,24 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             itemCount: playlists.length,
             itemBuilder: (context, index) {
               final playlist = playlists[index];
-              return ListTile(
-                title: Text(playlist['name']),
-                onTap: () {
-                  Get.to(() => PlaylistDetailsScreen(playlist: playlist));
+              return Dismissible(
+                key: Key(playlist['name']),
+                confirmDismiss: (direction) async {
+                  await _deletePlaylist(context, playlist['name']);
                 },
+                child: ListTile(
+                  title: Text(playlist['name']),
+                  onTap: () {
+                    Get.to(() => PlaylistDetailsScreen(playlist: playlist));
+                  },
+                ),
               );
             },
           );
         },
       ),
       floatingActionButton: GradientOutlineFAB(
-          icon: Icons.add,
+          icon: Icons.add_rounded,
           onPressed: () {
             _createPlaylistDialog(context);
           }),
@@ -72,22 +85,38 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           decoration: InputDecoration(hintText: "Enter playlist name"),
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              if (playlistName.trim().isEmpty) {
-                Get.snackbar("Error", "Playlist name cannot be empty");
-                return;
-              }
-              Navigator.pop(context, playlistName);
-            },
-            child: Text("Create"),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text("Cancel"),
-          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CommonOutlineButton(
+                  height: 40, width: 100, onPress: () {}, text: "Create"),
+              CommonOutlineButton(
+                  height: 40,
+                  width: 100,
+                  onPress: () {},
+                  text: "Cancel",
+                  outlineColor: [
+                    secondaryAppColor,
+                    secondaryAppColor,
+                  ])
+            ],
+          )
+          // TextButton(
+          //   onPressed: () {
+          //     if (playlistName.trim().isEmpty) {
+          //       Get.snackbar("Error", "Playlist name cannot be empty");
+          //       return;
+          //     }
+          //     Navigator.pop(context, playlistName);
+          //   },
+          //   child: Text("Create"),
+          // ),
+          // TextButton(
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //   },
+          //   child: Text("Cancel"),
+          // ),
         ],
       ),
     ).then((result) {
@@ -100,8 +129,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 //
 //
   Future<void> _pickSongsForPlaylist(String playlistName) async {
-    List<dynamic> selectedSongs = [];
-
     Get.to(() => SongPickerScreen(
           audioFiles: songController.audioFiles,
           onSongsSelected: (songs) {
@@ -120,20 +147,32 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     // Serialize the playlist data
     final playlistData = {
       'name': playlistName,
-      'songs': songs.map((song) => song.toJson()).toList(),
+      'songs': songs.map((song) => song.toJson()).toList()
     };
-
     playlists.add(jsonEncode(playlistData));
     await prefs.setStringList('playlists', playlists);
-
     Get.snackbar("Success", "Playlist '$playlistName' created successfully");
   }
 
   //
   //
-    Future<List<dynamic>> _getPlaylists() async {
+  Future<List<dynamic>> _getPlaylists() async {
     final prefs = await SharedPreferences.getInstance();
     final playlists = prefs.getStringList('playlists') ?? [];
     return playlists.map((json) => jsonDecode(json)).toList();
+  }
+
+//
+//
+  Future<void> _deletePlaylist(
+      BuildContext context, String playlistName) async {
+    final prefs = await SharedPreferences.getInstance();
+    final playlists = prefs.getStringList('playlists') ?? [];
+    playlists.removeWhere((json) {
+      final playlist = jsonDecode(json);
+      return playlist['name'] == playlistName;
+    });
+    await prefs.setStringList('playlists', playlists);
+    Get.snackbar("Success", "Playlist '$playlistName' deleted successfully");
   }
 }
