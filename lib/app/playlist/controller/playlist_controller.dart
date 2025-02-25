@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/song_model.dart';
+import '../../song/controller/song_controller.dart';
+import '../playlist_picker_screen.dart';
+import '../playlist_screen.dart';
+
 class PlaylistController extends GetxController {
   RxBool isLoading = true.obs;
   RxList playlist = [].obs;
@@ -52,5 +57,46 @@ class PlaylistController extends GetxController {
     Get.snackbar("Success", "Playlist '$playlistName' created successfully");
     await getPlaylists();
     update();
+  }
+
+  // Edit the playlist
+    Future<void> editPlaylist(BuildContext context, String playlistName,
+      List<SongsModel> currentSongs, SongController songController) async {
+    Get.to(() => SongPickerScreen(
+          audioFiles: songController.audioFiles,
+          onSongsSelected: (selectedSongs) async {
+            // Update the playlist with the selected songs
+            await updatePlaylist(playlistName, selectedSongs);
+            // Navigator.pop(context); // Return to the playlist details screen
+            await getPlaylists();
+            Get.back();
+             Get.back();
+            Get.snackbar("Success", "Playlist updated successfully");
+          },
+          initialSelection: currentSongs, // Pass the existing songs
+        ))?.then((_) {
+      // Refresh the playlist details screen after editing
+      // Get.back();
+      // Get.to(() => PlaylistDetailsScreen(playlist: playlist));
+    });
+  }
+
+  // Update the playlist
+    Future<void> updatePlaylist(
+      String playlistName, List<SongsModel> songs) async {
+    final prefs = await SharedPreferences.getInstance();
+    final playlists = prefs.getStringList('playlists') ?? [];
+
+    for (int i = 0; i < playlists.length; i++) {
+      final playlist = jsonDecode(playlists[i]);
+      if (playlist['name'] == playlistName) {
+        // Update the songs in the playlist
+        playlist['songs'] = songs.map((song) => song.toJson()).toList();
+        playlists[i] = jsonEncode(playlist);
+        await prefs.setStringList('playlists', playlists);
+        return;
+      }
+    }
+      
   }
 }

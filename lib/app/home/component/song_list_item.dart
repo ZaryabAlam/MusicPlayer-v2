@@ -28,46 +28,48 @@ class SongListItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: NeuContainer(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Image(
-                  image: AssetImage("assets/icons/record.png"),
-                  height: 45,
-                  width: 45,
-                  fit: BoxFit.contain),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      width: _w * 0.55,
-                      child: CommonText(
-                          text: name,
-                          fontSize: 14,
-                          weight: FontWeight.w600,
-                          maxLines: 1,
-                          overFlow: TextOverflow.ellipsis)),
-                  const SizedBox(height: 5),
-                  CommonText(
-                      text: duration,
-                      fontSize: 12,
-                      weight: FontWeight.w400,
-                      color: grey,
-                      maxLines: 1,
-                      overFlow: TextOverflow.ellipsis)
-                ],
-              ),
-            ],
-          ),
-          CommonInkwell(
-              space: 0,
+        padding: 0,
+          child:    CommonInkwell(
+              space: 10,
               onPress: onPress,
-              child: Icon(Icons.play_circle_rounded, color: grey, size: 36)),
-        ],
-      )),
+            child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+            Row(
+              children: [
+                Image(
+                    image: AssetImage("assets/icons/record.png"),
+                    height: 45,
+                    width: 45,
+                    fit: BoxFit.contain),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: _w * 0.55,
+                        child: CommonText(
+                            text: name,
+                            fontSize: 14,
+                            weight: FontWeight.w600,
+                            maxLines: 1,
+                            overFlow: TextOverflow.ellipsis)),
+                    const SizedBox(height: 5),
+                    CommonText(
+                        text: duration,
+                        fontSize: 12,
+                        weight: FontWeight.w400,
+                        color: grey,
+                        maxLines: 1,
+                        overFlow: TextOverflow.ellipsis)
+                  ],
+                ),
+              ],
+            ),
+            Icon(Icons.play_circle_rounded, color: grey, size: 36),
+                    ],
+                  ),
+          )),
     );
   }
 }

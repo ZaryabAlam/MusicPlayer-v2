@@ -1,10 +1,8 @@
-import "dart:convert";
 
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:mymusic/utils/constants.dart";
-import "package:shared_preferences/shared_preferences.dart";
 
+import "package:mymusic/utils/constants.dart";
 import "../../components/Common_empty_card.dart";
 import "../../components/common_outline_button.dart";
 import "../../components/common_text.dart";
@@ -75,13 +73,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               await playlistController.deletePlaylist(
                                   context, playlist['name']);
                             },
-                            // child: ListTile(
-                            //   title: Text(playlist['name']),
-                            //   onTap: () {
-                            //     Get.to(() =>
-                            //         PlaylistDetailsScreen(playlist: playlist));
-                            //   },
-                            // ),
                             child: PlaylistCard(
                               name: playlist['name'].toString().capitalizeFirst,
                               items: playlist['songs'].length.toString(),

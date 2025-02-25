@@ -13,6 +13,7 @@ class SongController extends GetxController {
   RxBool isLoading = true.obs;
   final OnAudioQuery audioQuery = OnAudioQuery();
   RxList<SongsModel> audioFiles = <SongsModel>[].obs;
+  RxList<SongsModel> filteredAudioFiles = <SongsModel>[].obs;
 
   @override
   void onInit() {
@@ -38,6 +39,7 @@ class SongController extends GetxController {
 
         // Assign the converted list to audioFiles
         audioFiles.assignAll(convertedFiles);
+        filteredAudioFiles.assignAll(convertedFiles); 
       } catch (e) {
         print('Failed to fetch audio files: $e');
       }
@@ -48,4 +50,19 @@ class SongController extends GetxController {
     isLoading.value = false;
     update();
   }
+
+    // Method to filter songs based on query
+  void filterSongs(String query) {
+    if (query.isEmpty) {
+      filteredAudioFiles.assignAll(audioFiles); // Reset to full list if query is empty
+    } else {
+      final lowerCaseQuery = query.toLowerCase();
+      final filtered = audioFiles.where((song) {
+        return song.title.toLowerCase().contains(lowerCaseQuery) ||
+               song.artist?.toLowerCase().contains(lowerCaseQuery) == true;
+      }).toList();
+      filteredAudioFiles.assignAll(filtered);
+    }
+  }
+
 }

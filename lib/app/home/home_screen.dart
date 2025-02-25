@@ -5,6 +5,7 @@ import 'package:mymusic/utils/time_format.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 // import 'package:path/path.dart' as path;
 
+import '../../components/about_bottom_dialog.dart';
 import '../../components/common_text.dart';
 import '../../components/empty_card_big.dart';
 import '../../components/empty_card_small.dart';
@@ -15,6 +16,7 @@ import '../../components/slide_down_animate.dart';
 import '../../components/slide_up_animate.dart';
 import '../album/album_song_screen.dart';
 import '../player_screen.dart';
+import '../search/search_screen.dart';
 import 'controller/home_controller.dart';
 
 import '../../controllers/theme_controller.dart';
@@ -64,11 +66,15 @@ class _HomeScreenState extends State<HomeScreen> {
             title: CommonText(text: "Home", fontSize: 22),
             actions: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(()=>SearchScreen());
+                  },
                   icon: Icon(Icons.search_rounded),
                   visualDensity: VisualDensity.compact),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    aboutBottomDialog(context);
+                  },
                   icon: Icon(Icons.info_rounded),
                   visualDensity: VisualDensity.compact)
             ],

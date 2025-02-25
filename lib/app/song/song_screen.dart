@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import '../../components/common_text.dart';
 import '../../components/empty_card_small.dart';
 import '../../components/shimmer_card_small.dart';
 import '../../utils/time_format.dart';
@@ -35,7 +36,7 @@ class _PlaylistState extends State<SongScreen> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-          appBar: AppBar(title: Text('Songs')),
+          appBar: AppBar(title: CommonText(text: "Songs", fontSize: 22)),
           body: Column(
             children: [
               songController.isLoading.value
@@ -52,7 +53,7 @@ class _PlaylistState extends State<SongScreen> {
                   : songController.audioFiles.isEmpty
                       ? Padding(
                           padding: const EdgeInsets.only(top: 20),
-                          child: EmptyCardSmall() )
+                          child: EmptyCardSmall())
                       : Expanded(
                           child: ListView.builder(
                             itemCount: songController.audioFiles.length,

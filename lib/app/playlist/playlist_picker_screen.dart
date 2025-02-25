@@ -1,7 +1,9 @@
-import"package:flutter/material.dart";
+import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:mymusic/app/playlist/component/song_act_card.dart";
 
 import "../../models/song_model.dart";
+import "../../utils/time_format.dart";
 
 class SongPickerScreen extends StatelessWidget {
   final List<SongsModel> audioFiles;
@@ -12,12 +14,12 @@ class SongPickerScreen extends StatelessWidget {
     Key? key,
     required this.audioFiles,
     required this.onSongsSelected,
-    this.initialSelection = const [], // Default to an empty list if not provided
+    this.initialSelection =
+        const [], 
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Initialize selectedSongs with the initial selection
     List<SongsModel> selectedSongs = List.from(initialSelection);
 
     return Scaffold(
@@ -32,7 +34,6 @@ class SongPickerScreen extends StatelessWidget {
                 return;
               }
               onSongsSelected(selectedSongs);
-              // Navigator.pop(context);
             },
           ),
         ],
@@ -41,22 +42,32 @@ class SongPickerScreen extends StatelessWidget {
         itemCount: audioFiles.length,
         itemBuilder: (context, index) {
           final audioFile = audioFiles[index];
-          return ListTile(
-            title: Text(audioFile.title),
-            subtitle: Text(audioFile.album ?? "Unknown Album"),
-            trailing: Icon(
-              selectedSongs.contains(audioFile)
-                  ? Icons.check_box
-                  : Icons.check_box_outline_blank,
-            ),
-            onTap: () {
-              if (selectedSongs.contains(audioFile)) {
-                selectedSongs.remove(audioFile);
-              } else {
-                selectedSongs.add(audioFile);
-              }
-              (context as Element).markNeedsBuild();
-            },
+          return Column(
+            children: [
+              index == 0
+                  ? const SizedBox(height: 20)
+                  : const SizedBox(height: 0),
+              SongActCard(
+                  name: audioFile.title,
+                  duration: formatDurationMilliseconds(audioFile.duration ?? 0),
+                  action: Icon(
+                    selectedSongs.contains(audioFile)
+                        ? Icons.check_box
+                        : Icons.check_box_outline_blank,
+                        
+                  ),
+                  onPress: () {
+                    if (selectedSongs.contains(audioFile)) {
+                      selectedSongs.remove(audioFile);
+                    } else {
+                      selectedSongs.add(audioFile);
+                    }
+                    (context as Element).markNeedsBuild();
+                  }),
+              index == audioFiles.length - 1
+                  ? const SizedBox(height: 20)
+                  : const SizedBox(height: 15)
+            ],
           );
         },
       ),
