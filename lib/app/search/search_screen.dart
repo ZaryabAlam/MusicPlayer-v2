@@ -9,6 +9,7 @@ import '../../controllers/theme_controller.dart';
 import '../../utils/constants.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
+import '../player/controller.dart/audio_player_controller.dart';
 import '../player/player_screen.dart';
 import '../song/controller/song_controller.dart';
 
@@ -23,6 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final SongController songController = Get.put(SongController());
   TextEditingController searchController = TextEditingController();
   final themeController = Get.find<ThemeController>();
+  final audioPlayerController = Get.find<AudioPlayerController>();
 
   @override
   void initState() {
@@ -107,30 +109,43 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: EmptyCardSmall())
                       : Expanded(
                           child: ListView.builder(
-        itemCount: songController.filteredAudioFiles.length,
-        itemBuilder: (context, index) {
-          final audioFile = songController.filteredAudioFiles[index];
-          return Column(
-            children: [
-              index == 0
-                  ? const SizedBox(height: 10)
-                  : const SizedBox(height: 0),
-              SongListItem(
-                name: audioFile.title,
-                duration: formatDurationMilliseconds(audioFile.duration ?? 0),
-                onPress: () {
-                  Get.to(() => PlayerScreen(
-                        audioFiles: songController.filteredAudioFiles,
-                        currentIndex: index,
-                      ));
-                },
-              ),
-              index == songController.filteredAudioFiles.length - 1
-                  ? const SizedBox(height: 20)
-                  : const SizedBox(height: 15),
-            ],
-          );})
-                        ),
+                              itemCount:
+                                  songController.filteredAudioFiles.length,
+                              itemBuilder: (context, index) {
+                                final audioFile =
+                                    songController.filteredAudioFiles[index];
+                                return Column(
+                                  children: [
+                                    index == 0
+                                        ? const SizedBox(height: 10)
+                                        : const SizedBox(height: 0),
+                                    SongListItem(
+                                      name: audioFile.title,
+                                      duration: formatDurationMilliseconds(
+                                          audioFile.duration ?? 0),
+                                      onPress: () {
+                                        audioPlayerController.audioFiles
+                                            .assignAll(songController
+                                                .filteredAudioFiles);
+                                        audioPlayerController
+                                            .currentIndex.value = index;
+                                        Get.to(() => PlayerScreen(
+                                              reset: true,
+                                              audioFiles: songController
+                                                  .filteredAudioFiles,
+                                              currentIndex: index,
+                                            ));
+                                      },
+                                    ),
+                                    index ==
+                                            songController
+                                                    .filteredAudioFiles.length -
+                                                1
+                                        ? const SizedBox(height: 20)
+                                        : const SizedBox(height: 15),
+                                  ],
+                                );
+                              })),
             ],
           ),
         ));

@@ -121,6 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           audioPlayerController
                                               .currentIndex.value = index;
                                           Get.to(() => PlayerScreen(
+                                            
+                                              reset: true,
                                               audioFiles:
                                                   homeController.audioFiles,
                                               currentIndex: index));
@@ -243,6 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               audioPlayerController
                                                   .currentIndex.value = index;
                                               Get.to(() => PlayerScreen(
+                                                  reset: true,
                                                   audioFiles:
                                                       homeController.audioFiles,
                                                   currentIndex: index));

@@ -1,4 +1,3 @@
-
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -77,7 +76,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               name: playlist['name'].toString().capitalizeFirst,
                               items: playlist['songs'].length.toString(),
                               onPress: () {
-                                    Get.to(() =>
+                                Get.to(() =>
                                     PlaylistDetailsScreen(playlist: playlist));
                               },
                             ),

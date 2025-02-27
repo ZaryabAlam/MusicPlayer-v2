@@ -6,7 +6,7 @@ import '../../../models/song_model.dart';
 class AudioPlayerController extends GetxController {
   final AudioPlayer audioPlayer = AudioPlayer();
   RxBool isMiniPlayerVisible = false.obs;
-  RxList<SongsModel> audioFiles = <SongsModel>[].obs; // List of audio files
+  RxList audioFiles = [].obs; // List of audio files
   RxInt currentIndex = 0.obs; // Current index of the playing song
 
   @override

@@ -7,6 +7,7 @@ import '../../components/common_text.dart';
 import '../../components/shimmer_card_small.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
+import '../player/controller.dart/audio_player_controller.dart';
 import '../player/player_screen.dart';
 import 'controller/favorite_controller.dart';
 
@@ -17,6 +18,7 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   final FavoriteController favoriteController = Get.put(FavoriteController());
+    final audioPlayerController = Get.find<AudioPlayerController>();
 
   @override
   void initState() {
@@ -73,8 +75,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 duration: formatDurationMilliseconds(
                                     song.duration ?? 0),
                                 onPress: () {
+                                       audioPlayerController.audioFiles
+                                                  .assignAll(favoriteController.favoriteList);
+                                              audioPlayerController
+                                                  .currentIndex.value = index;
                                   Get.to(() => PlayerScreen(
-                                        // audioFiles: _favorites,
+                                          reset: true,
                                         audioFiles: favoriteController.favoriteList,
                                         currentIndex: index,
                                       ));

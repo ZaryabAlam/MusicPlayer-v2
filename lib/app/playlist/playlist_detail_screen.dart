@@ -6,6 +6,7 @@ import '../../components/gradient_FAB.dart';
 import '../../models/song_model.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
+import '../player/controller.dart/audio_player_controller.dart';
 import '../player/player_screen.dart';
 import '../song/controller/song_controller.dart';
 import 'controller/playlist_controller.dart';
@@ -21,6 +22,7 @@ class PlaylistDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final SongController songController = Get.put(SongController());
     final PlaylistController playlistController = Get.put(PlaylistController());
+      final audioPlayerController = Get.find<AudioPlayerController>();
 
     final songs = List<Map<String, dynamic>>.from(playlist['songs'])
         .map((songMap) => SongsModel.fromJson(songMap))
@@ -52,8 +54,14 @@ class PlaylistDetailsScreen extends StatelessWidget {
                   name: song.title,
                   duration: formatDurationMilliseconds(song.duration ?? 0),
                   onPress: () {
-                    Get.to(() =>
-                        PlayerScreen(audioFiles: songs, currentIndex: index));
+                      audioPlayerController.audioFiles
+                                              .assignAll(
+                                                  songs);
+                                          audioPlayerController
+                                              .currentIndex.value = index;
+                                          Get.to(() => PlayerScreen(
+                                            
+                                              reset: true,audioFiles: songs, currentIndex: index));
                   }),
               index == songs.length - 1
                   ? const SizedBox(height: 20)

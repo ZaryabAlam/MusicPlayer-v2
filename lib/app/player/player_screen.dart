@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import "package:audio_video_progress_bar/audio_video_progress_bar.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -15,11 +17,13 @@ import "controller.dart/audio_player_controller.dart";
 class PlayerScreen extends StatefulWidget {
   final List<dynamic> audioFiles;
   final int currentIndex;
+  bool? reset = false;
 
-  const PlayerScreen({
+   PlayerScreen({
     Key? key,
     required this.audioFiles,
     required this.currentIndex,
+    this.reset,
   }) : super(key: key);
 
   @override
@@ -172,23 +176,25 @@ class _PlayerScreenState extends State<PlayerScreen> {
       audioPlayerController.showMiniPlayer();
     });
     try {
-      final playlist = ConcatenatingAudioSource(
-        children: widget.audioFiles.map((audioFile) {
-          return AudioSource.uri(
-            Uri.parse(audioFile.uri),
-            tag: MediaItem(
-              id: audioFile.id.toString(),
-              title: audioFile.title,
-              artist: audioFile.artist,
-              album: audioFile.album,
-            ),
-          );
-        }).toList(),
+      if ((_audioPlayer.sequence?.isEmpty ?? true) || (widget.reset ==true)) {
+  final playlist = ConcatenatingAudioSource(
+    children: widget.audioFiles.map((audioFile) {
+      return AudioSource.uri(
+        Uri.parse(audioFile.uri),
+        tag: MediaItem(
+          id: audioFile.id.toString(),
+          title: audioFile.title,
+          artist: audioFile.artist,
+          album: audioFile.album,
+        ),
       );
-
-      await _audioPlayer.setAudioSource(playlist,
-          initialIndex: widget.currentIndex);
-      await _audioPlayer.play();
+    }).toList(),
+  );
+  
+  await _audioPlayer.setAudioSource(playlist,
+      initialIndex: widget.currentIndex);
+  await _audioPlayer.play();
+}
     } catch (e) {
       print('Error loading audio: $e');
     }
