@@ -15,7 +15,8 @@ import '../../components/shimmer_card_square.dart';
 import '../../components/slide_down_animate.dart';
 import '../../components/slide_up_animate.dart';
 import '../album/album_song_screen.dart';
-import '../player_screen.dart';
+import '../player/controller.dart/audio_player_controller.dart';
+import '../player/player_screen.dart';
 import '../search/search_screen.dart';
 import 'controller/home_controller.dart';
 
@@ -27,7 +28,7 @@ import 'component/home_title.dart';
 import 'component/song_list_item.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -36,6 +37,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final themeController = Get.find<ThemeController>();
   final HomeController homeController = Get.put(HomeController());
+  final audioPlayerController = Get.find<AudioPlayerController>();
   // final OnAudioQuery _audioQuery = OnAudioQuery();
   // List<SongModel> _audioFiles = [];
   // Map<String, List<SongModel>> _audioFolders = {};
@@ -62,12 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
     bool _isDarkMode = themeController.isDarkMode.value;
 
     return Obx(() => Scaffold(
-          appBar:  AppBar(
+          appBar: AppBar(
             title: CommonText(text: "Home", fontSize: 22),
             actions: [
               IconButton(
                   onPressed: () {
-                    Get.to(()=>SearchScreen());
+                    Get.to(() => SearchScreen());
                   },
                   icon: Icon(Icons.search_rounded),
                   visualDensity: VisualDensity.compact),
@@ -91,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // EmptyCardBig(),
                   // ShimmerCardSmall(),
                   // ShimmerCardBig(),
-                 const SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   homeController.isFileLoading.value
                       ? const ShimmerCardSmall()
                       : homeController.audioFiles.isEmpty
@@ -113,6 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         audioFile: audioFile,
                                         isDarkMode: _isDarkMode,
                                         onPress: () {
+                                          audioPlayerController.audioFiles
+                                              .assignAll(
+                                                  homeController.audioFiles);
+                                          audioPlayerController
+                                              .currentIndex.value = index;
                                           Get.to(() => PlayerScreen(
                                               audioFiles:
                                                   homeController.audioFiles,
@@ -127,13 +134,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     text: "Albums",
                     onPress: () {
                       Get.to(() => AlbumScreen());
+                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen()));
                     },
                   ),
                   // const SizedBox(height: 20),
                   homeController.isFolderLoading.value
                       ? Container(
                           height: 160,
-                          padding:const  EdgeInsets.symmetric(vertical: 20),
+                          padding: const EdgeInsets.symmetric(vertical: 20),
                           child: ListView.builder(
                               itemCount: 8,
                               shrinkWrap: true,
@@ -143,15 +151,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               }),
                         )
                       : homeController.audioFolders.isEmpty
-                          ?  const Padding(
-                              padding:  EdgeInsets.only(top: 20),
+                          ? const Padding(
+                              padding: EdgeInsets.only(top: 20),
                               child: EmptyCardBig(),
                             )
                           : SlideDownAnimate(
                               delay: 400,
                               children: [
                                 Container(
-                                   height: 160,
+                                  height: 160,
                                   // color: red,
                                   child: ListView.builder(
                                       itemCount:
@@ -180,11 +188,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 itemCount: folderFiles.length
                                                     .toString(),
                                                 onPress: () {
-                                                       Get.to(
-                                              () => AlbumSongScreen(
-                                                  folderName: folderName,
-                                                  folderFiles: folderFiles),
-                                            );
+                                                  Get.to(
+                                                    () => AlbumSongScreen(
+                                                        folderName: folderName,
+                                                        folderFiles:
+                                                            folderFiles),
+                                                  );
                                                 }),
                                             index == albumData.length - 1
                                                 ? const SizedBox(width: 15)
@@ -228,6 +237,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 formatDurationMilliseconds(
                                                     audioFile.duration ?? 0),
                                             onPress: () {
+                                              audioPlayerController.audioFiles
+                                                  .assignAll(homeController
+                                                      .audioFiles);
+                                              audioPlayerController
+                                                  .currentIndex.value = index;
                                               Get.to(() => PlayerScreen(
                                                   audioFiles:
                                                       homeController.audioFiles,

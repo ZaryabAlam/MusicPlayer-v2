@@ -6,7 +6,7 @@ import '../../components/gradient_FAB.dart';
 import '../../models/song_model.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
-import '../player_screen.dart';
+import '../player/player_screen.dart';
 import '../song/controller/song_controller.dart';
 import 'controller/playlist_controller.dart';
 

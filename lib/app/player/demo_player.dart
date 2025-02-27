@@ -4,8 +4,8 @@ import "package:just_audio/just_audio.dart";
 import "package:just_audio_background/just_audio_background.dart";
 import "package:rxdart/rxdart.dart";
 
-import "../models/position_data.dart";
-import "../utils/player_controls.dart";
+import "../../models/position_data.dart";
+import "../../utils/player_controls.dart";
 
 class DemoPlayer extends StatefulWidget {
   const DemoPlayer({super.key});

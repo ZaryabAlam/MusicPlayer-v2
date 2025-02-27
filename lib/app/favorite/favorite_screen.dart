@@ -7,7 +7,7 @@ import '../../components/common_text.dart';
 import '../../components/shimmer_card_small.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
-import '../player_screen.dart';
+import '../player/player_screen.dart';
 import 'controller/favorite_controller.dart';
 
 class FavoriteScreen extends StatefulWidget {

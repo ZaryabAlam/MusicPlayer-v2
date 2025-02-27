@@ -5,7 +5,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../components/empty_card_small.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
-import '../player_screen.dart';
+import '../player/player_screen.dart';
 
 class AlbumSongScreen extends StatelessWidget {
   final String folderName;

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mymusic/components/common_inkwell.dart';
 import 'package:mymusic/components/neu_container.dart';
 
+import '../app/player/controller.dart/audio_player_controller.dart';
 import 'constants.dart';
 
 class Controls extends StatefulWidget {
@@ -20,10 +22,13 @@ class Controls extends StatefulWidget {
 class _ControlsState extends State<Controls> {
   bool _isShuffleEnabled = false;
   LoopMode _loopMode = LoopMode.off;
+      final AudioPlayerController audioPlayerController =
+      Get.put(AudioPlayerController());
 
   @override
   void initState() {
     super.initState();
+       
   }
 
   @override
@@ -33,7 +38,6 @@ class _ControlsState extends State<Controls> {
       children: [
         IconButton(
           onPressed: () {
-            // Toggle shuffle mode
             setState(() {
               _isShuffleEnabled = !_isShuffleEnabled;
               widget.audioPlayer.setShuffleModeEnabled(_isShuffleEnabled);
@@ -81,6 +85,7 @@ class _ControlsState extends State<Controls> {
                       widget.audioPlayer.seek(Duration.zero);
                     }
                     widget.audioPlayer.play();
+                    audioPlayerController.showMiniPlayer();
                   },
                 ),
               );
@@ -93,6 +98,7 @@ class _ControlsState extends State<Controls> {
                   child: Icon(Icons.pause_rounded, size: 60),
                   onPress: () {
                     widget.audioPlayer.pause();
+                     audioPlayerController.dismissMiniPlayer();
                   },
                 ),
               );
@@ -105,10 +111,10 @@ class _ControlsState extends State<Controls> {
                 child: Icon(Icons.play_arrow_rounded, size: 60),
                 onPress: () {
                   if (processingState == ProcessingState.completed) {
-                    // If the song has finished, reset to the beginning
                     widget.audioPlayer.seek(Duration.zero);
                   }
                   widget.audioPlayer.play();
+                    audioPlayerController.showMiniPlayer();
                 },
               ),
             );

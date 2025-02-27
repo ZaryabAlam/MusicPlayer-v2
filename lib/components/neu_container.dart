@@ -9,8 +9,9 @@ class NeuContainer extends StatelessWidget {
   double? padding;
   double? radius;
   double? margin;
+  Color? bgColor;
   final Widget? child;
-  NeuContainer({super.key, required this.child, this.padding, this.radius, this.margin});
+  NeuContainer({super.key, required this.child, this.padding, this.radius, this.margin, this.bgColor});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class NeuContainer extends StatelessWidget {
       padding: EdgeInsets.all(padding ?? 10),
       margin: EdgeInsets.all(margin ?? 0) ,
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: bgColor ?? Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.circular(radius?? 15),
           boxShadow: [
             BoxShadow(

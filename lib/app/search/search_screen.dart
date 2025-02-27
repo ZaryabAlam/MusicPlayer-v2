@@ -9,7 +9,7 @@ import '../../controllers/theme_controller.dart';
 import '../../utils/constants.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
-import '../player_screen.dart';
+import '../player/player_screen.dart';
 import '../song/controller/song_controller.dart';
 
 class SearchScreen extends StatefulWidget {

@@ -7,13 +7,14 @@ import "package:mymusic/components/neu_container.dart";
 import "package:mymusic/utils/constants.dart";
 import "package:rxdart/rxdart.dart" as rxdart;
 
-import "../models/position_data.dart";
-import "../utils/player_controls.dart";
-import "favorite/controller/favorite_controller.dart";
+import "../../models/position_data.dart";
+import "../../utils/player_controls.dart";
+import "../favorite/controller/favorite_controller.dart";
+import "controller.dart/audio_player_controller.dart";
 
 class PlayerScreen extends StatefulWidget {
-  final List<dynamic> audioFiles; // List of all songs
-  final int currentIndex; // Index of the currently selected song
+  final List<dynamic> audioFiles;
+  final int currentIndex;
 
   const PlayerScreen({
     Key? key,
@@ -27,6 +28,9 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen> {
   final FavoriteController favoriteController = Get.put(FavoriteController());
+  final AudioPlayerController audioPlayerController =
+      Get.put(AudioPlayerController());
+
   late AudioPlayer _audioPlayer;
   bool _isFavorite = false;
   Stream<PositionData> get _positionDataStream =>
@@ -41,14 +45,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   void initState() {
     super.initState();
-    _audioPlayer = AudioPlayer();
+    // _audioPlayer = AudioPlayer();
+    _audioPlayer = Get.find<AudioPlayerController>().audioPlayer;
     _initAudioPlayer();
     _checkIfFavorite();
   }
 
   @override
   void dispose() async {
-    _audioPlayer.dispose();
+    // _audioPlayer.dispose();
     favoriteController.getFavorites();
     super.dispose();
   }
@@ -65,7 +70,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
               children: [
                 IconButton(
                     onPressed: () {
-                      getBack();
+                      // getBack();
+                      Navigator.pop(context);
                     },
                     icon: Icon(Icons.arrow_back_rounded)),
                 IconButton(
@@ -161,22 +167,25 @@ class _PlayerScreenState extends State<PlayerScreen> {
   //
   //--------------------------------- Custom Functions
   //
-    Future<void> _initAudioPlayer() async {
+  Future<void> _initAudioPlayer() async {
+    Future.delayed(Duration(seconds: 3), () {
+      audioPlayerController.showMiniPlayer();
+    });
     try {
       final playlist = ConcatenatingAudioSource(
         children: widget.audioFiles.map((audioFile) {
           return AudioSource.uri(
             Uri.parse(audioFile.uri),
             tag: MediaItem(
-                id: audioFile.id.toString(),
-                title: audioFile.title,
-                artist: audioFile.artist,
-                album: audioFile.album),
+              id: audioFile.id.toString(),
+              title: audioFile.title,
+              artist: audioFile.artist,
+              album: audioFile.album,
+            ),
           );
         }).toList(),
       );
 
-      // Set the playlist and start playing from the current index
       await _audioPlayer.setAudioSource(playlist,
           initialIndex: widget.currentIndex);
       await _audioPlayer.play();
@@ -184,7 +193,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
       print('Error loading audio: $e');
     }
   }
-  
+
   //
   //
 
@@ -206,20 +215,17 @@ class _PlayerScreenState extends State<PlayerScreen> {
       'title': currentSong.title,
       'artist': currentSong.artist,
       'album': currentSong.album,
-      'uri': currentSong.uri, // Include the URI for playback
+      'uri': currentSong.uri,
       'duration': currentSong.duration,
     };
 
     if (_isFavorite) {
-      // await FavoriteSongsManager.removeFavorite(currentSong.id.toString());
       await favoriteController.removeFavorite(currentSong.id.toString());
     } else {
-      // await FavoriteSongsManager.addFavorite(songData);
       await favoriteController.addFavorite(songData);
     }
     setState(() {
       _isFavorite = !_isFavorite;
     });
   }
-
 }

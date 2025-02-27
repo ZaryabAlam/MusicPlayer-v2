@@ -1,11 +1,12 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+
 import '../../components/common_text.dart';
 import '../../components/empty_card_small.dart';
 import '../../components/shimmer_card_small.dart';
 import '../../utils/time_format.dart';
 import '../home/component/song_list_item.dart';
-import '../player_screen.dart';
+import '../player/player_screen.dart';
 import 'controller/song_controller.dart';
 
 class SongScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class SongScreen extends StatefulWidget {
 
 class _PlaylistState extends State<SongScreen> {
   final SongController songController = Get.put(SongController());
+
   // final OnAudioQuery _audioQuery = OnAudioQuery();
   // List<SongModel> _audioFiles = [];
   // bool _isLoading = true;
@@ -36,6 +38,7 @@ class _PlaylistState extends State<SongScreen> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
+
           appBar: AppBar(title: CommonText(text: "Songs", fontSize: 22)),
           body: Column(
             children: [
