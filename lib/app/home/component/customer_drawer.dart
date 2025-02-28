@@ -15,16 +15,14 @@ class CustomDrawer extends StatelessWidget {
       child: Column(
         children: [
           DrawerHeader(
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
+              margin: EdgeInsets.zero,
               child: Center(
-            child: Image(
-                                    height: 300,
-                                    width: 300,
-                                    fit: BoxFit.cover,
-                                    image:
-                                        AssetImage("assets/icons/record.png"))
-          )),
+                  child: Image(
+                      height: 300,
+                      width: 300,
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/icons/record.png")))),
           Padding(
             padding: EdgeInsets.only(top: 25, left: 25),
             child: ListTile(
@@ -41,19 +39,19 @@ class CustomDrawer extends StatelessWidget {
               title: Text("Playlist"),
               leading: Icon(Icons.stars_rounded),
               onTap: () {
-             Get.back();
-             Get.to(()=>PlaylistScreen());
+                Get.back();
+                Get.to(() => PlaylistScreen());
               },
             ),
           ),
-           Padding(
+          Padding(
             padding: EdgeInsets.only(top: 25, left: 25),
             child: ListTile(
               title: Text("Favorite"),
               leading: Icon(Icons.favorite_rounded),
               onTap: () {
-             Get.back();
-             Get.to(()=>FavoriteScreen());
+                Get.back();
+                Get.to(() => FavoriteScreen());
               },
             ),
           ),
@@ -63,8 +61,8 @@ class CustomDrawer extends StatelessWidget {
               title: Text("Settings"),
               leading: Icon(Icons.settings_rounded),
               onTap: () {
-             Get.back();
-             Get.to(()=>SettingScreen());
+                Get.back();
+                Get.to(() => SettingScreen());
               },
             ),
           )

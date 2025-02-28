@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:mymusic/app/dashboard/dashboard.dart';
+import 'package:mymusic/components/common_text.dart';
 import 'package:mymusic/utils/theme_data.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
           home: Stack(
             children: [
               GetMaterialApp(
-                title: 'My Music',
+                title: 'Harmonia',
                 theme: lightTheme,
                 darkTheme: darkTheme,
                 themeMode: themeController.isDarkMode.value
@@ -48,20 +50,25 @@ class MyApp extends StatelessWidget {
                     : ThemeMode.light,
                 defaultTransition: Transition.cupertino,
                 transitionDuration: const Duration(milliseconds: 800),
-                home: HomeScreen(),
+                home: Dashboard(),
               ),
               Positioned(
-                  bottom: 0,
+                  bottom: 50,
                   left: 0,
                   right: 0,
-                  child: audioPlayerController.isMiniPlayerVisible.value
+                  child: ((audioPlayerController.isMiniPlayerVisible.value ==
+                              true) &&
+                          (audioPlayerController.isMainPlayer.value == false))
                       ? AnimatedSwitcher(
                           duration: Duration(milliseconds: 500),
                           child: Dismissible(
                             key: Key("mini"),
                             confirmDismiss: (direction) async {
+                              audioPlayerController.audioFiles.value = [];
+                              audioPlayerController.currentIndex.value = 0;
                               _audioPlayer.pause();
-                              audioPlayerController.dismissMiniPlayer();},
+                              audioPlayerController.dismissMiniPlayer();
+                            },
                             child: MiniPlayer(
                                 audioPlayer: audioPlayerController.audioPlayer),
                           ))

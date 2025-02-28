@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Obx(() => Scaffold(
           appBar: AppBar(
-            title: CommonText(text: "Home", fontSize: 22),
+            title: CommonText(text: "Harmonia", fontSize: 22),
             actions: [
               IconButton(
                   onPressed: () {
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   visualDensity: VisualDensity.compact)
             ],
           ),
-          drawer: const CustomDrawer(),
+          // drawer: const CustomDrawer(),
           body: SingleChildScrollView(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

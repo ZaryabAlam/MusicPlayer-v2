@@ -18,7 +18,7 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   final FavoriteController favoriteController = Get.put(FavoriteController());
-    final audioPlayerController = Get.find<AudioPlayerController>();
+  final audioPlayerController = Get.find<AudioPlayerController>();
 
   @override
   void initState() {
@@ -62,7 +62,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         key: Key(song.id.toString()),
                         confirmDismiss: (direction) async {
                           // _removeFromFavorites(song.id.toString());
-                          await favoriteController.removeFavorite(song.id.toString());
+                          await favoriteController
+                              .removeFavorite(song.id.toString());
                           await favoriteController.getFavorites();
                         },
                         child: Column(
@@ -75,15 +76,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 duration: formatDurationMilliseconds(
                                     song.duration ?? 0),
                                 onPress: () {
-                                       audioPlayerController.audioFiles
-                                                  .assignAll(favoriteController.favoriteList);
-                                              audioPlayerController
-                                                  .currentIndex.value = index;
+                                  audioPlayerController.audioFiles.assignAll(
+                                      favoriteController.favoriteList);
+                                  audioPlayerController.currentIndex.value =
+                                      index;
                                   Get.to(() => PlayerScreen(
-                                          reset: true,
-                                        audioFiles: favoriteController.favoriteList,
-                                        currentIndex: index,
-                                      ));
+                                      reset: true,
+                                      audioFiles:
+                                          favoriteController.favoriteList,
+                                      currentIndex: index));
                                 }),
                             index == favoriteController.favoriteList.length - 1
                                 ? const SizedBox(height: 20)

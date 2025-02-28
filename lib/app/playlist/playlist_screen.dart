@@ -88,12 +88,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       );
                     },
                   ),
-        floatingActionButton: GradientOutlineFAB(
-            icon: Icons.add_rounded,
-            onPressed: () {
-              // _createPlaylistDialog(context);
-              playlistBottomDialog(context);
-            }),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 40),
+          child: GradientOutlineFAB(
+              icon: Icons.add_rounded,
+              onPressed: () {
+                // _createPlaylistDialog(context);
+                playlistBottomDialog(context);
+              }),
+        ),
       ),
     );
   }

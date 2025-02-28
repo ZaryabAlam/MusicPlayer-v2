@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../../../models/song_model.dart';
-
 class AudioPlayerController extends GetxController {
   final AudioPlayer audioPlayer = AudioPlayer();
   RxBool isMiniPlayerVisible = false.obs;
+  RxBool isMainPlayer = false.obs;
   RxList audioFiles = [].obs; // List of audio files
   RxInt currentIndex = 0.obs; // Current index of the playing song
 
@@ -21,8 +20,18 @@ class AudioPlayerController extends GetxController {
     update();
   }
 
-   Future<void> showMiniPlayer() async {
-        isMiniPlayerVisible.value = true;
+  Future<void> showMiniPlayer() async {
+    isMiniPlayerVisible.value = true;
+    update();
+  }
+
+  Future<void> showMainPlayer() async {
+    isMainPlayer.value = true;
+    update();
+  }
+
+  Future<void> dismissMainPlayer() async {
+    isMainPlayer.value = false;
     update();
   }
 }

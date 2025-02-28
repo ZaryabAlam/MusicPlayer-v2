@@ -19,7 +19,7 @@ class PlayerScreen extends StatefulWidget {
   final int currentIndex;
   bool? reset = false;
 
-   PlayerScreen({
+  PlayerScreen({
     Key? key,
     required this.audioFiles,
     required this.currentIndex,
@@ -59,6 +59,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
   void dispose() async {
     // _audioPlayer.dispose();
     favoriteController.getFavorites();
+    Future.delayed(Duration(milliseconds: 1), () {
+      audioPlayerController.dismissMainPlayer();
+    });
+
     super.dispose();
   }
 
@@ -172,29 +176,30 @@ class _PlayerScreenState extends State<PlayerScreen> {
   //--------------------------------- Custom Functions
   //
   Future<void> _initAudioPlayer() async {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(milliseconds: 1), () {
+      audioPlayerController.showMainPlayer();
       audioPlayerController.showMiniPlayer();
     });
     try {
-      if ((_audioPlayer.sequence?.isEmpty ?? true) || (widget.reset ==true)) {
-  final playlist = ConcatenatingAudioSource(
-    children: widget.audioFiles.map((audioFile) {
-      return AudioSource.uri(
-        Uri.parse(audioFile.uri),
-        tag: MediaItem(
-          id: audioFile.id.toString(),
-          title: audioFile.title,
-          artist: audioFile.artist,
-          album: audioFile.album,
-        ),
-      );
-    }).toList(),
-  );
-  
-  await _audioPlayer.setAudioSource(playlist,
-      initialIndex: widget.currentIndex);
-  await _audioPlayer.play();
-}
+      if ((_audioPlayer.sequence?.isEmpty ?? true) || (widget.reset == true)) {
+        final playlist = ConcatenatingAudioSource(
+          children: widget.audioFiles.map((audioFile) {
+            return AudioSource.uri(
+              Uri.parse(audioFile.uri),
+              tag: MediaItem(
+                id: audioFile.id.toString(),
+                title: audioFile.title,
+                artist: audioFile.artist,
+                album: audioFile.album,
+              ),
+            );
+          }).toList(),
+        );
+
+        await _audioPlayer.setAudioSource(playlist,
+            initialIndex: widget.currentIndex);
+        await _audioPlayer.play();
+      }
     } catch (e) {
       print('Error loading audio: $e');
     }
