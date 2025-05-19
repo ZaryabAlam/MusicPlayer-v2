@@ -37,10 +37,7 @@ class CommonOutlineButton extends StatelessWidget {
       padding: EdgeInsets.all(1.2),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: outlineColor ??[
-         primaryAppColor,
-           secondaryAppColor.withOpacity(0.8),
-          ],
+          colors: outlineColor ?? [primaryAppColor, secondaryAppColor],
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
         ),
@@ -56,17 +53,16 @@ class CommonOutlineButton extends StatelessWidget {
         // ],
       ),
       child: NeuContainer(
-      radius: 15,
-     padding: 0,
+        radius: 13,
+        padding: 0,
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 15)),
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 13)),
             onTap: onPress,
             child: Center(
               child: CommonText(
                 text: text,
-             
                 weight: FontWeight.w500,
               ),
             ),

@@ -55,7 +55,6 @@ class CommonButton extends StatelessWidget {
             child: CommonText(
               textAlign: TextAlign.center,
               text: " $text ",
-             
               weight: FontWeight.w500,
             ),
           ),

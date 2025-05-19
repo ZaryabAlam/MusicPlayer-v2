@@ -153,6 +153,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         builder: (context, snapshot) {
                           final positionData = snapshot.data;
                           return ProgressBar(
+                              baseBarColor: grey.withOpacity(0.1),
+                              progressBarColor: primaryAppColor,
                               barCapShape: BarCapShape.round,
                               progress: positionData?.position ?? Duration.zero,
                               buffered:

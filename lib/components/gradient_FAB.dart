@@ -38,7 +38,7 @@ class GradientOutlineFAB extends StatelessWidget {
               color: Colors.black26,
               spreadRadius: 2,
               blurRadius: 5,
-              offset:  Offset(2, 2),
+              offset: Offset(2, 2),
             ),
           ],
         ),
@@ -49,9 +49,9 @@ class GradientOutlineFAB extends StatelessWidget {
               onPress: onPressed,
               space: 0,
               radius: 14,
-              child:   Icon(
-              icon,
-                color: isDarkmode ?  primaryWhite : Colors.black87,
+              child: Icon(
+                icon,
+                color: isDarkmode ? primaryWhite : Colors.black87,
               )),
         ));
   }

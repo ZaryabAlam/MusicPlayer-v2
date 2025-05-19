@@ -5,6 +5,7 @@ import "package:just_audio_background/just_audio_background.dart";
 import "package:rxdart/rxdart.dart";
 
 import "../../models/position_data.dart";
+import "../../utils/constants.dart";
 import "../../utils/player_controls.dart";
 
 class DemoPlayer extends StatefulWidget {
@@ -99,6 +100,8 @@ class _HomeScreenState extends State<DemoPlayer> {
               builder: (context, snapshot) {
                 final positionData = snapshot.data;
                 return ProgressBar(
+                  baseBarColor: grey.withOpacity(0.1),
+                  progressBarColor: primaryAppColor,
                   progress: positionData?.position ?? Duration.zero,
                   buffered: positionData?.bufferPosition ?? Duration.zero,
                   total: positionData?.duration ?? Duration.zero,
@@ -160,6 +163,3 @@ class MediaMetaData extends StatelessWidget {
     );
   }
 }
-
-
-

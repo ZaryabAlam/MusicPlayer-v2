@@ -189,8 +189,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               },
                               text: "Cancel",
                               outlineColor: [
-                                secondaryAppColor,
-                                secondaryAppColor,
+                                darkModeGray,
+                                darkModeGray,
                               ])
                         ],
                       )

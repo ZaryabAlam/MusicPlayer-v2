@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:mymusic/app/home/component/customer_drawer.dart';
 import 'package:mymusic/utils/time_format.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 // import 'package:path/path.dart' as path;
@@ -65,7 +65,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Obx(() => Scaffold(
           appBar: AppBar(
-            title: CommonText(text: "Harmonia", fontSize: 22),
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: Hero(
+                      tag: "appLogo",
+                      child: Image(
+                          height: 28,
+                          width: 28,
+                          image: AssetImage("assets/logos/app_logo_full.png")),
+                    )),
+                SizedBox(width: 5),
+                CommonText(text: "Harmonia", fontSize: 22),
+              ],
+            ),
             actions: [
               IconButton(
                   onPressed: () {
@@ -87,12 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // SizedBox(height: 20),
-                  // ShimmerCardSquare(),
-                  // EmptyCardSmall(),
-                  // EmptyCardBig(),
-                  // ShimmerCardSmall(),
-                  // ShimmerCardBig(),
                   const SizedBox(height: 20),
                   homeController.isFileLoading.value
                       ? const ShimmerCardSmall()
@@ -121,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           audioPlayerController
                                               .currentIndex.value = index;
                                           Get.to(() => PlayerScreen(
-                                            
                                               reset: true,
                                               audioFiles:
                                                   homeController.audioFiles,

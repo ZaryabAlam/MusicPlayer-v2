@@ -38,7 +38,6 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-
     setArgs();
     _pages = [
       HomeScreen(),
@@ -55,7 +54,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       extendBody: true,
       body: _pages.elementAt(_selectedIndex),
@@ -75,71 +73,107 @@ class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
 
-   CustomBottomNavigationBar({
+  CustomBottomNavigationBar({
     Key? key,
     required this.selectedIndex,
     required this.onItemTapped,
   }) : super(key: key);
-    final themeController = Get.find<ThemeController>();
+  final themeController = Get.find<ThemeController>();
 
   @override
   Widget build(BuildContext context) {
-        bool isDarkmode = themeController.isDarkMode.value;
-    return Container(
-      decoration: BoxDecoration(
-        color: isDarkmode ? Colors.grey.shade900 : Colors.grey.shade200,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: Offset(1, 2),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _buildNavItem(
-              icon: selectedIndex == 0
-                  ? "assets/icons/home_solid.png"
-                  : "assets/icons/home.png",
-              color: selectedIndex == 0 ? isDarkmode ? Colors.grey.shade800 :Colors.grey.shade300  : transparent,
-              iconColor: selectedIndex == 0 ? isDarkmode ? Colors.grey.shade400 :Colors.black87 : Colors.grey.shade400,
-              label: 'Home'.tr,
-              index: 0,
-            ),
-            _buildNavItem(
-              icon: selectedIndex == 1
-                  ? "assets/icons/playlist_solid.png"
-                  : "assets/icons/playlist.png",
-              color: selectedIndex == 1 ? isDarkmode ? Colors.grey.shade800 :Colors.grey.shade300  : transparent,
-              iconColor: selectedIndex == 1 ? isDarkmode ? Colors.grey.shade400 :Colors.black87 : Colors.grey.shade400,
-              label: 'Playlist'.tr,
-              index: 1,
-            ),
-            _buildNavItem(
-              icon: selectedIndex == 2
-                  ? "assets/icons/fav_solid.png"
-                  : "assets/icons/fav.png",
-              color: selectedIndex == 2 ? isDarkmode ? Colors.grey.shade800 :Colors.grey.shade300  : transparent,
-              iconColor: selectedIndex == 2 ? isDarkmode ? Colors.grey.shade400 :Colors.black87 : Colors.grey.shade400,
-              label: 'Favorite'.tr,
-              index: 2,
-            ),
-            _buildNavItem(
-              icon: selectedIndex == 3
-                  ? "assets/icons/settings_solid.png"
-                  : "assets/icons/settings.png",
-              color: selectedIndex == 3 ? isDarkmode ? Colors.grey.shade800 :Colors.grey.shade300  : transparent,
-              iconColor: selectedIndex == 3 ? isDarkmode ? Colors.grey.shade400 :Colors.black87 : Colors.grey.shade400,
-              label: 'Settings'.tr,
-              index: 3,
+    bool darkMode = themeController.isDarkMode.value;
+    return Obx(
+      () => Container(
+        decoration: BoxDecoration(
+          color: themeController.isDarkMode.value
+              ? Colors.grey.shade900
+              : Colors.grey.shade200,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 8,
+              offset: Offset(1, 2),
             ),
           ],
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildNavItem(
+                icon: selectedIndex == 0
+                    ? "assets/icons/home_solid.png"
+                    : "assets/icons/home.png",
+                color: selectedIndex == 0
+                    ? themeController.isDarkMode.value
+                        ? Colors.grey.shade800
+                        : Colors.grey.shade300
+                    : transparent,
+                iconColor: selectedIndex == 0
+                    ? themeController.isDarkMode.value
+                        ? Colors.grey.shade400
+                        : Colors.black87
+                    : Colors.grey.shade400,
+                label: 'Home'.tr,
+                index: 0,
+              ),
+              _buildNavItem(
+                icon: selectedIndex == 1
+                    ? "assets/icons/playlist_solid.png"
+                    : "assets/icons/playlist.png",
+                color: selectedIndex == 1
+                    ? themeController.isDarkMode.value
+                        ? Colors.grey.shade800
+                        : Colors.grey.shade300
+                    : transparent,
+                iconColor: selectedIndex == 1
+                    ? themeController.isDarkMode.value
+                        ? Colors.grey.shade400
+                        : Colors.black87
+                    : Colors.grey.shade400,
+                label: 'Playlist'.tr,
+                index: 1,
+              ),
+              _buildNavItem(
+                icon: selectedIndex == 2
+                    ? "assets/icons/fav_solid.png"
+                    : "assets/icons/fav.png",
+                color: selectedIndex == 2
+                    ? themeController.isDarkMode.value
+                        ? Colors.grey.shade800
+                        : Colors.grey.shade300
+                    : transparent,
+                iconColor: selectedIndex == 2
+                    ? themeController.isDarkMode.value
+                        ? Colors.grey.shade400
+                        : Colors.black87
+                    : Colors.grey.shade400,
+                label: 'Favorite'.tr,
+                index: 2,
+              ),
+              _buildNavItem(
+                icon: selectedIndex == 3
+                    ? "assets/icons/settings_solid.png"
+                    : "assets/icons/settings.png",
+                color: selectedIndex == 3
+                    ? themeController.isDarkMode.value
+                        ? Colors.grey.shade800
+                        : Colors.grey.shade300
+                    : transparent,
+                iconColor: selectedIndex == 3
+                    ? themeController.isDarkMode.value
+                        ? Colors.grey.shade400
+                        : Colors.black87
+                    : Colors.grey.shade400,
+                label: 'Settings'.tr,
+                index: 3,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -160,7 +194,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
         children: <Widget>[
           Center(
             child: Container(
-               
                 decoration: BoxDecoration(
                     color: color, borderRadius: BorderRadius.circular(10)),
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -177,8 +210,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             text: label,
             color: iconColor,
             fontSize: 8,
-            weight:
-                index == selectedIndex ? FontWeight.w600 : FontWeight.w300,
+            weight: index == selectedIndex ? FontWeight.w600 : FontWeight.w300,
           ),
         ],
       ),

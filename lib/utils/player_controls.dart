@@ -22,13 +22,12 @@ class Controls extends StatefulWidget {
 class _ControlsState extends State<Controls> {
   bool _isShuffleEnabled = false;
   LoopMode _loopMode = LoopMode.off;
-      final AudioPlayerController audioPlayerController =
+  final AudioPlayerController audioPlayerController =
       Get.put(AudioPlayerController());
 
   @override
   void initState() {
     super.initState();
-       
   }
 
   @override
@@ -98,7 +97,7 @@ class _ControlsState extends State<Controls> {
                   child: Icon(Icons.pause_rounded, size: 60),
                   onPress: () {
                     widget.audioPlayer.pause();
-                     audioPlayerController.dismissMiniPlayer();
+                    audioPlayerController.dismissMiniPlayer();
                   },
                 ),
               );
@@ -114,7 +113,7 @@ class _ControlsState extends State<Controls> {
                     widget.audioPlayer.seek(Duration.zero);
                   }
                   widget.audioPlayer.play();
-                    audioPlayerController.showMiniPlayer();
+                  audioPlayerController.showMiniPlayer();
                 },
               ),
             );
@@ -162,7 +161,6 @@ class _ControlsState extends State<Controls> {
       ],
     );
   }
-
 
   IconData _getRepeatIcon() {
     switch (_loopMode) {

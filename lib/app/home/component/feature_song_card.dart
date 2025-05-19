@@ -1,4 +1,4 @@
-import"package:flutter/material.dart";
+import "package:flutter/material.dart";
 
 import "../../../components/common_inkwell.dart";
 import "../../../components/common_text.dart";
@@ -14,11 +14,10 @@ class featureSongCard extends StatelessWidget {
     required this.audioFile,
     required bool isDarkMode,
     required this.onPress,
-    
   }) : _isDarkMode = isDarkMode;
   final SongsModel audioFile;
   final bool _isDarkMode;
-    final Function() onPress;
+  final Function() onPress;
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +89,11 @@ class featureSongCard extends StatelessWidget {
                         OutlineContainer(
                             padding: 0,
                             radius: 25,
-                            outlineColor: _isDarkMode
-                                ? white.withOpacity(0.5)
-                                : black.withOpacity(0.5),
-                            color: black.withOpacity(0.2),
+                            outlineColor: primaryAppColor,
+                            // _isDarkMode
+                            //     ? white.withOpacity(0.5)
+                            //     : black.withOpacity(0.5),
+                            color: primaryAppColor.withOpacity(0.1),
                             child: CommonInkwell(
                               onPress: onPress,
                               space: 5,

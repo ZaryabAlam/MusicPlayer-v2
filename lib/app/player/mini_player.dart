@@ -39,7 +39,7 @@ class MiniPlayer extends StatelessWidget {
         final state = snapshot.data;
 
         if (state?.currentSource == null) {
-          return SizedBox.shrink(); 
+          return SizedBox.shrink();
         }
 
         final mediaItem = state!.currentSource!.tag as MediaItem;
@@ -49,8 +49,7 @@ class MiniPlayer extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               Get.to(() => PlayerScreen(
-                  audioFiles:
-                      audioPlayerController.audioFiles,
+                  audioFiles: audioPlayerController.audioFiles,
                   currentIndex: audioPlayerController.currentIndex.value));
               // Navigator.push(
               //   context,
@@ -101,6 +100,8 @@ class MiniPlayer extends StatelessWidget {
                             builder: (context, snapshot) {
                               final positionData = snapshot.data;
                               return ProgressBar(
+                                  baseBarColor: grey.withOpacity(0.1),
+                                  progressBarColor: primaryAppColor,
                                   onSeek: audioPlayer.seek,
                                   timeLabelTextStyle: TextStyle(fontSize: 0),
                                   thumbRadius: 0,

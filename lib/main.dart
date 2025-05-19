@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:mymusic/app/dashboard/dashboard.dart';
+import 'package:mymusic/app/splash/splash_screen.dart';
 import 'package:mymusic/components/common_text.dart';
 import 'package:mymusic/utils/theme_data.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -42,16 +43,16 @@ class MyApp extends StatelessWidget {
           home: Stack(
             children: [
               GetMaterialApp(
-                title: 'Harmonia',
-                theme: lightTheme,
-                darkTheme: darkTheme,
-                themeMode: themeController.isDarkMode.value
-                    ? ThemeMode.dark
-                    : ThemeMode.light,
-                defaultTransition: Transition.cupertino,
-                transitionDuration: const Duration(milliseconds: 800),
-                home: Dashboard(),
-              ),
+                  title: 'Harmonia',
+                  theme: lightTheme,
+                  darkTheme: darkTheme,
+                  themeMode: themeController.isDarkMode.value
+                      ? ThemeMode.dark
+                      : ThemeMode.light,
+                  defaultTransition: Transition.cupertino,
+                  transitionDuration: const Duration(milliseconds: 800),
+                  // home: Dashboard(),
+                  home: SplashScreen()),
               Positioned(
                   bottom: 50,
                   left: 0,
