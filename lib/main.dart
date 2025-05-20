@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:mymusic/app/dashboard/dashboard.dart';
 import 'package:mymusic/app/splash/splash_screen.dart';
-import 'package:mymusic/components/common_text.dart';
 import 'package:mymusic/utils/theme_data.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -21,6 +19,7 @@ void main() async {
   List<Permission> permissions = [Permission.storage];
   await permissions.request();
   await JustAudioBackground.init(
+      androidNotificationIcon: 'mipmap/ic_launcher_foreground',
       androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
       androidNotificationChannelName: 'Audio playback',
       androidNotificationOngoing: true);

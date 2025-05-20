@@ -1,4 +1,6 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 
 import "../../../components/common_inkwell.dart";
 import "../../../components/common_text.dart";
@@ -35,14 +37,27 @@ class featureSongCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               child: Stack(
                 children: [
-                  const Positioned(
-                      top: -30,
-                      left: -60,
-                      child: Image(
-                          height: 300,
-                          width: 300,
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/icons/record.png"))),
+                  Positioned(
+                    bottom: -30,
+                    left: -90,
+                    child: Row(
+                      children: [
+                        Image(
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/icons/waves.png")),
+                        RotatedBox(
+                          quarterTurns: 2,
+                          child: Image(
+                              height: 150,
+                              width: 150,
+                              fit: BoxFit.cover,
+                              image: AssetImage("assets/icons/waves.png")),
+                        ),
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Row(
