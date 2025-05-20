@@ -10,7 +10,6 @@ import 'package:mymusic/components/common_text.dart';
 import 'package:mymusic/utils/theme_data.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'app/home/home_screen.dart';
 import 'app/player/controller.dart/audio_player_controller.dart';
 import 'app/player/mini_player.dart';
 import 'utils/constants.dart';
